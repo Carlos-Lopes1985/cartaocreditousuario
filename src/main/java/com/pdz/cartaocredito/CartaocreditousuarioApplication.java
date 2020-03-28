@@ -1,4 +1,4 @@
-package com.infogrupo.cartaocredito;
+package com.pdz.cartaocredito;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
