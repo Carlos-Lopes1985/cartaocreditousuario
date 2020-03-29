@@ -8,4 +8,6 @@ import com.pdz.cartaocredito.entity.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 
+	Usuario findByCpf(String cpf);
+	
 }

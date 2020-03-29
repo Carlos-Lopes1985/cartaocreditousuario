@@ -7,5 +7,6 @@ import com.pdz.cartaocredito.entity.CartaoCredito;
 
 @Repository
 public interface CartaoCreditoRepository extends JpaRepository<CartaoCredito, Integer>{
-
+	
+	CartaoCredito findByNumeroCartao(String numero);
 }

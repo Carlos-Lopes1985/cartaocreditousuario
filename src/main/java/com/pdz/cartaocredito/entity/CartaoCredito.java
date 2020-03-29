@@ -27,6 +27,7 @@ public class CartaoCredito implements Serializable {
 	private Double limiteDisponivelAtual;
 	private Double limiteDisponivelParaSaque;
 	
+	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
