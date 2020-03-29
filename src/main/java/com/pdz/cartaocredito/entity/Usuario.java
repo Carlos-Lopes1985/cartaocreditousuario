@@ -2,7 +2,9 @@ package com.pdz.cartaocredito.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -29,6 +31,9 @@ public class Usuario implements Serializable{
 	
 	@OneToMany(mappedBy = "usuario")
 	private Set<CartaoCredito>cartoes = new HashSet<>();
+	
+	@OneToMany(mappedBy = "usuario")
+	private List<Compra>compras = new ArrayList<Compra>();
 
 	public Usuario() {
 		super();
@@ -98,4 +103,13 @@ public class Usuario implements Serializable{
 	public void setCartoes(Set<CartaoCredito> cartoes) {
 		this.cartoes = cartoes;
 	}
+
+	public List<Compra> getCompras() {
+		return compras;
+	}
+
+	public void setCompras(List<Compra> compras) {
+		this.compras = compras;
+	}
+	
 }

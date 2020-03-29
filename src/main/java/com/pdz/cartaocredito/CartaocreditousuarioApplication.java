@@ -33,7 +33,7 @@ public class CartaocreditousuarioApplication implements CommandLineRunner {
 		Usuario user2 = new Usuario(null,"Roberto",LocalDate.now(),"11792993707","123");
 		Usuario user3 = new Usuario(null,"Juvenal",LocalDate.now(),"11792993708","123");
 		
-		CartaoCredito cc = new CartaoCredito(null, "Master", "423587900002323", "239", 2500., 1000., 200., user1);
+		CartaoCredito cc  = new CartaoCredito(null, "Master", "423587900002323", "239", 2500., 1000., 200., user1);
 		CartaoCredito cc1 = new CartaoCredito(null, "Visa",   "423587900002324", "238", 1500., 200., 400., user1);
 		CartaoCredito cc2 = new CartaoCredito(null, "Alelo",  "423587900002325", "237", 5500., 2000., 600., user2);
 		CartaoCredito cc3 = new CartaoCredito(null, "Sodex",  "423587900002326", "236", 7500., 4000., 2700., user3);
