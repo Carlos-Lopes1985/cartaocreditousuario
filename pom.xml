@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.pdz.cartaocredito</groupId>
 	<artifactId>cartaocreditousuario</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>cartaocreditousuario</name>
 	<description>Informações relacionadas a cartão de crédito do usuario</description>
 
