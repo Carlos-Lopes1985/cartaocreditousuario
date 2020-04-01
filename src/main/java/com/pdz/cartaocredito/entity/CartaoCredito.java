@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class CartaoCredito implements Serializable {
 
@@ -27,7 +29,7 @@ public class CartaoCredito implements Serializable {
 	private Double limiteDisponivelAtual;
 	private Double limiteDisponivelParaSaque;
 	
-	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;

@@ -1,5 +1,7 @@
 package com.pdz.cartaocredito.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,10 @@ public class CartaoCreditoService {
 		CartaoCredito  cc = cartaoCreditoRepository.findByNumeroCartao(numero);
 		
 		return cc;
+	}
+	
+	public List<CartaoCredito> buscarTodos() {
+		return cartaoCreditoRepository.findAll();
 	}
 	
 	public CartaoCreditoDTO verificaSeCartaoTemLimite(String numero, Double valor) {
