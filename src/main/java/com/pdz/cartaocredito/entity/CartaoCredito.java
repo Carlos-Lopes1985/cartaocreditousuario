@@ -3,6 +3,7 @@ package com.pdz.cartaocredito.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,7 +38,7 @@ public class CartaoCredito implements Serializable {
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
-	@OneToOne(mappedBy = "cartaoCredito")
+	@OneToOne(mappedBy = "cartaoCredito", cascade = CascadeType.ALL)
 	private Compra compra;
 	
 	public CartaoCredito() {

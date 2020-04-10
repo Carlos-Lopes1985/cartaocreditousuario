@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,10 +30,10 @@ public class Usuario implements Serializable{
 	private String    cpf;
 	private String    senha;
 	
-	@OneToMany(mappedBy = "usuario")
+	@OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
 	private Set<CartaoCredito>cartoes = new HashSet<>();
 	
-	@OneToMany(mappedBy = "usuario")
+	@OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
 	private List<Compra>compras = new ArrayList<Compra>();
 
 	public Usuario() {

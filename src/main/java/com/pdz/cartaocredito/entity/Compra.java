@@ -35,6 +35,7 @@ public class Compra implements Serializable {
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name=" cartao_id")
 	private CartaoCredito cartaoCredito;
@@ -61,7 +62,8 @@ public class Compra implements Serializable {
 	@Override
 	public String toString() {
 		return "Compra [id=" + id + ", dataCompra=" + dataCompra + ", status=" + status + ", valor=" + valor + ", loja="
-				+ loja + ", usuario=" + usuario + "]";
+				+ loja + ", qtdeParcela=" + qtdeParcela + ", usuario=" + usuario + ", cartaoCredito=" + cartaoCredito
+				+ "]";
 	}
 
 	public Integer getId() {
