@@ -2,15 +2,15 @@ package com.pdz.cartaocredito.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,14 +32,15 @@ public class CartaoCredito implements Serializable {
 	private Double limiteDisponivelAtual;
 	private Double limiteDisponivelParaSaque;
 	private LocalDate dataValidade;
+	private LocalDate vencimentoFatura;
 	
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
-	@OneToOne(mappedBy = "cartaoCredito", cascade = CascadeType.ALL)
-	private Compra compra;
+	@OneToMany(mappedBy = "cartaoCredito")
+	private List<Compra> compra;
 	
 	public CartaoCredito() {
 		super();
@@ -132,11 +133,11 @@ public class CartaoCredito implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public Compra getCompra() {
+	public List<Compra> getCompra() {
 		return compra;
 	}
 
-	public void setCompra(Compra compra) {
+	public void setCompra(List<Compra> compra) {
 		this.compra = compra;
 	}
 
@@ -147,5 +148,12 @@ public class CartaoCredito implements Serializable {
 	public void setDataValidade(LocalDate dataValidade) {
 		this.dataValidade = dataValidade;
 	}
-	
+
+	public LocalDate getVencimentoFatura() {
+		return vencimentoFatura;
+	}
+
+	public void setVencimentoFatura(LocalDate vencimentoFatura) {
+		this.vencimentoFatura = vencimentoFatura;
+	}
 }

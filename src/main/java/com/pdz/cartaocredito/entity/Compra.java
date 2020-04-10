@@ -3,6 +3,7 @@ package com.pdz.cartaocredito.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,8 +28,10 @@ public class Compra implements Serializable {
 	private LocalDate dataCompra;
 	private Integer status;
 	private Double valor;
-	private Integer loja;
 	private Integer qtdeParcela;
+	
+	@OneToOne( mappedBy="compra")
+	private Loja loja;
 	
 	@JsonIgnore
 	@ManyToOne
@@ -36,28 +39,26 @@ public class Compra implements Serializable {
 	private Usuario usuario;
 	
 	@JsonIgnore
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name=" cartao_id")
 	private CartaoCredito cartaoCredito;
-	
+
 	public Compra() {
 		super();
 	}
 
-	public Compra(Integer id, LocalDate dataCompra, Integer status, Double valor, Integer loja, Integer qtdeParcela,  Usuario usuario,
-			CartaoCredito cartaoCredito) {
+	public Compra(Integer id, LocalDate dataCompra, Integer status, Double valor, Integer qtdeParcela, Loja loja,
+			Usuario usuario, CartaoCredito cartaoCredito) {
 		super();
 		this.id = id;
 		this.dataCompra = dataCompra;
 		this.status = status;
 		this.valor = valor;
-		this.loja = loja;
 		this.qtdeParcela = qtdeParcela;
+		this.loja = loja;
 		this.usuario = usuario;
 		this.cartaoCredito = cartaoCredito;
 	}
-
-
 
 	@Override
 	public String toString() {
@@ -98,11 +99,11 @@ public class Compra implements Serializable {
 		this.valor = valor;
 	}
 
-	public Integer getLoja() {
+	public Loja getLoja() {
 		return loja;
 	}
 
-	public void setLoja(Integer loja) {
+	public void setLoja(Loja loja) {
 		this.loja = loja;
 	}
 

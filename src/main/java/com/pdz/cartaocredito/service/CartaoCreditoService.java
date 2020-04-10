@@ -25,44 +25,7 @@ public class CartaoCreditoService {
 		return cartaoCreditoRepository.findAll();
 	}
 	
-	public boolean verificaSeCartaoTemLimite(String numero, Double valor) {
-	
-		CartaoCredito cc  = buscaCartaoPorNumero(numero);
-		Boolean       bOk = false;
-		
-		if(valor < cc.getLimiteDisponivelAtual()) 
-			bOk = true;
-		
-		return bOk;
+	public CartaoCredito salvar(CartaoCredito cartao) {
+		return cartaoCreditoRepository.save(cartao);
 	}
-	
-	public boolean verificaSeNumeroCartaoInvalidoExiste(String numero) {
-		
-		Boolean bOk = true;
-		
-		if(numero.length() != 16) {
-			bOk = false;
-		}else {
-			try {
-				 buscaCartaoPorNumero(numero);
-			} catch (Exception e) {
-				bOk = false;
-			}
-		}
-		return bOk;
-	}
-	
-	public boolean verificaNumeroCartaoCodSeguranca(String numero, String cod) {
-		
-		Boolean bOk = true;
-		
-		try {
-			cartaoCreditoRepository.findByNumeroCartaoAndCodSeguranca(numero, cod);
-		} catch (Exception e) {
-			bOk=false;
-		}
-		
-		return bOk;
-	}
-	
 }

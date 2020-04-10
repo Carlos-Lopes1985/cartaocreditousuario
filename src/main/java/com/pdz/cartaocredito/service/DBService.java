@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.pdz.cartaocredito.entity.CartaoCredito;
 import com.pdz.cartaocredito.entity.Compra;
+import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.Usuario;
 import com.pdz.cartaocredito.repository.CartaoCreditoRepository;
 import com.pdz.cartaocredito.repository.CompraRepository;
+import com.pdz.cartaocredito.repository.LojaRepository;
 import com.pdz.cartaocredito.repository.UsuarioRepository;
 
 @Service
@@ -26,6 +28,9 @@ public class DBService {
 	@Autowired
 	private CompraRepository compraRepository;
 	
+	@Autowired
+	private LojaRepository lojaRepository;
+	
 	public void instanciateTestDatabase()throws ParseException{
 		
 		Usuario user1 = new Usuario(null,"Carlos",LocalDate.now(),"11792993706","123");
@@ -37,13 +42,20 @@ public class DBService {
 		CartaoCredito cc2 = new CartaoCredito(null, "Alelo",  "4235879000023253", "237", 5500., 2000., 600.,LocalDate.now(), user2);
 		CartaoCredito cc3 = new CartaoCredito(null, "Sodex",  "4235879000023263", "236", 7500., 4000., 2700.,LocalDate.now(), user3);
 		
-		Compra c1 = new Compra(null,LocalDate.now(),1,200.,1,10,user3,cc);
-		Compra c2 = new Compra(null,LocalDate.now(),1,500.,1,2,user1,cc3);
-		Compra c3 = new Compra(null,LocalDate.now(),1,300.,1,2,user2,cc2);
-		Compra c4 = new Compra(null,LocalDate.now(),1,400.,1,2,user2,cc1);
-		Compra c5 = new Compra(null,LocalDate.now(),1,700.,1,2,user3,cc2);
-		Compra c6 = new Compra(null,LocalDate.now(),1,500.,1,3,user2,cc1);
-		Compra c7 = new Compra(null,LocalDate.now(),1,200.,1,5,user3,cc3);
+		Loja l1 = new Loja(null,"lojas americanas");
+		Loja l2 = new Loja(null,"Magazine luiza");
+		Loja l3 = new Loja(null,"Pernambucanas");
+		Loja l4 = new Loja(null,"Mariza");
+		
+		lojaRepository.saveAll(Arrays.asList(l1,l2,l3,l4));
+		
+		Compra c1 = new Compra(null,LocalDate.now(),1,200.,10,l1,user3,cc);
+		Compra c2 = new Compra(null,LocalDate.now(),1,500.,1,l2,user1,cc3);
+		Compra c3 = new Compra(null,LocalDate.now(),1,300.,1,l2,user2,cc2);
+		Compra c4 = new Compra(null,LocalDate.now(),1,400.,1,l3,user2,cc1);
+		Compra c5 = new Compra(null,LocalDate.now(),1,700.,1,l1,user3,cc2);
+		Compra c6 = new Compra(null,LocalDate.now(),1,500.,1,l2,user2,cc1);
+		Compra c7 = new Compra(null,LocalDate.now(),1,200.,1,l3,user3,cc3);
 		
 		usuarioRepository.saveAll(Arrays.asList(user1,user2,user3));
 		cartaoCreditoRepository.saveAll(Arrays.asList(cc,cc1,cc2,cc3));

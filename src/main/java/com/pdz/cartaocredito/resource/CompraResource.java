@@ -22,7 +22,7 @@ public class CompraResource {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Compra>efetuarCompra(CompraDTO compra)throws Exception{
 		
-		compra.setDataCompra(LocalDate.now());
+		compra.setDataCompra(LocalDate.now()); // ???
 			
 		Compra compraObj = compraService.salvarCompras(compra);
 		
