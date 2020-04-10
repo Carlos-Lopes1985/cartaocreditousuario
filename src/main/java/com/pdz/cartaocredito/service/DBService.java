@@ -32,18 +32,18 @@ public class DBService {
 		Usuario user2 = new Usuario(null,"Roberto",LocalDate.now(),"11792993707","123");
 		Usuario user3 = new Usuario(null,"Juvenal",LocalDate.now(),"11792993708","123");
 		
-		CartaoCredito cc  = new CartaoCredito(null, "Master", "423587900002323", "239", 2500., 1000., 200., user1);
-		CartaoCredito cc1 = new CartaoCredito(null, "Visa",   "423587900002324", "238", 1500., 200., 400., user1);
-		CartaoCredito cc2 = new CartaoCredito(null, "Alelo",  "423587900002325", "237", 5500., 2000., 600., user2);
-		CartaoCredito cc3 = new CartaoCredito(null, "Sodex",  "423587900002326", "236", 7500., 4000., 2700., user3);
+		CartaoCredito cc  = new CartaoCredito(null, "Master", "423587900002323", "239", 2500., 1000., 200.,LocalDate.now(), user1);
+		CartaoCredito cc1 = new CartaoCredito(null, "Visa",   "423587900002324", "238", 1500., 200., 400.,LocalDate.now(), user1);
+		CartaoCredito cc2 = new CartaoCredito(null, "Alelo",  "423587900002325", "237", 5500., 2000., 600.,LocalDate.now(), user2);
+		CartaoCredito cc3 = new CartaoCredito(null, "Sodex",  "423587900002326", "236", 7500., 4000., 2700.,LocalDate.now(), user3);
 		
-		Compra c1 = new Compra(null,LocalDate.now(),1,200.,1,user3);
-		Compra c2 = new Compra(null,LocalDate.now(),1,500.,1,user1);
-		Compra c3 = new Compra(null,LocalDate.now(),1,300.,1,user2);
-		Compra c4 = new Compra(null,LocalDate.now(),1,400.,1,user2);
-		Compra c5 = new Compra(null,LocalDate.now(),1,700.,1,user3);
-		Compra c6 = new Compra(null,LocalDate.now(),1,500.,1,user2);
-		Compra c7 = new Compra(null,LocalDate.now(),1,200.,1,user3);
+		Compra c1 = new Compra(null,LocalDate.now(),1,200.,1,10,user3,cc);
+		Compra c2 = new Compra(null,LocalDate.now(),1,500.,1,2,user1,cc3);
+		Compra c3 = new Compra(null,LocalDate.now(),1,300.,1,2,user2,cc2);
+		Compra c4 = new Compra(null,LocalDate.now(),1,400.,1,2,user2,cc1);
+		Compra c5 = new Compra(null,LocalDate.now(),1,700.,1,2,user3,cc2);
+		Compra c6 = new Compra(null,LocalDate.now(),1,500.,1,3,user2,cc1);
+		Compra c7 = new Compra(null,LocalDate.now(),1,200.,1,5,user3,cc3);
 		
 		usuarioRepository.saveAll(Arrays.asList(user1,user2,user3));
 		cartaoCreditoRepository.saveAll(Arrays.asList(cc,cc1,cc2,cc3));

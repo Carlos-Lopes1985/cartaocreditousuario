@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pdz.cartaocredito.entity.CartaoCredito;
-import com.pdz.cartaocredito.entity.dto.CartaoCreditoDTO;
 import com.pdz.cartaocredito.repository.CartaoCreditoRepository;
 
 @Service
@@ -26,21 +25,44 @@ public class CartaoCreditoService {
 		return cartaoCreditoRepository.findAll();
 	}
 	
-	public CartaoCreditoDTO verificaSeCartaoTemLimite(String numero, Double valor) {
+	public boolean verificaSeCartaoTemLimite(String numero, Double valor) {
 	
-		CartaoCredito cc = buscaCartaoPorNumero(numero);
-		CartaoCreditoDTO ccDto = new CartaoCreditoDTO();
+		CartaoCredito cc  = buscaCartaoPorNumero(numero);
+		Boolean       bOk = false;
 		
-		if(valor < cc.getLimiteDisponivelAtual()) {
-			ccDto.setLimite(true);
-		}else {
-			ccDto.setLimite(false);
-		}
-			
-		ccDto.setId(cc.getId());
-		ccDto.setBandeira(cc.getBandeira());
-		ccDto.setNumeroCartao(cc.getNumeroCartao());
+		if(valor < cc.getLimiteDisponivelAtual()) 
+			bOk = true;
 		
-		return ccDto;
+		return bOk;
 	}
+	
+	public boolean verificaSeNumeroCartaoInvalidoExiste(String numero) {
+		
+		Boolean bOk = true;
+		
+		if(numero.length() != 16) {
+			bOk = false;
+		}else {
+			try {
+				 buscaCartaoPorNumero(numero);
+			} catch (Exception e) {
+				bOk = false;
+			}
+		}
+		return bOk;
+	}
+	
+	public boolean verificaNumeroCartaoCodSeguranca(String numero, String cod) {
+		
+		Boolean bOk = true;
+		
+		try {
+			cartaoCreditoRepository.findByNumeroCartaoAndCodSeguranca(numero, cod);
+		} catch (Exception e) {
+			bOk=false;
+		}
+		
+		return bOk;
+	}
+	
 }

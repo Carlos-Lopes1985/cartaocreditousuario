@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,25 +28,35 @@ public class Compra implements Serializable {
 	private Integer status;
 	private Double valor;
 	private Integer loja;
+	private Integer qtdeParcela;
 	
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
-
+	
+	@OneToOne
+	@JoinColumn(name=" cartao_id")
+	private CartaoCredito cartaoCredito;
+	
 	public Compra() {
 		super();
 	}
 
-	public Compra(Integer id, LocalDate dataCompra, Integer status, Double valor, Integer loja, Usuario usuario) {
+	public Compra(Integer id, LocalDate dataCompra, Integer status, Double valor, Integer loja, Integer qtdeParcela,  Usuario usuario,
+			CartaoCredito cartaoCredito) {
 		super();
 		this.id = id;
 		this.dataCompra = dataCompra;
 		this.status = status;
 		this.valor = valor;
 		this.loja = loja;
+		this.qtdeParcela = qtdeParcela;
 		this.usuario = usuario;
+		this.cartaoCredito = cartaoCredito;
 	}
+
+
 
 	@Override
 	public String toString() {
@@ -100,7 +111,22 @@ public class Compra implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
+	public CartaoCredito getCartaoCredito() {
+		return cartaoCredito;
+	}
+
+	public void setCartaoCredito(CartaoCredito cartaoCredito) {
+		this.cartaoCredito = cartaoCredito;
+	}
+
+	public Integer getQtdeParcela() {
+		return qtdeParcela;
+	}
+
+	public void setQtdeParcela(Integer qtdeParcela) {
+		this.qtdeParcela = qtdeParcela;
+	}
 	
 	
 }

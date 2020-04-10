@@ -1,6 +1,7 @@
 package com.pdz.cartaocredito.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,18 +30,22 @@ public class CartaoCredito implements Serializable {
 	private Double limiteDisponivelTotal;
 	private Double limiteDisponivelAtual;
 	private Double limiteDisponivelParaSaque;
+	private LocalDate dataValidade;
 	
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
+	@OneToOne(mappedBy = "cartaoCredito")
+	private Compra compra;
+	
 	public CartaoCredito() {
 		super();
 	}
 
 	public CartaoCredito(Integer id, String bandeira, String numeroCartao, String codSeguranca,
-			Double limiteDisponivelTotal, Double limiteDisponivelAtual, Double limiteDisponivelParaSaque,
+			Double limiteDisponivelTotal, Double limiteDisponivelAtual, Double limiteDisponivelParaSaque,LocalDate dataValidade,
 			Usuario usuario) {
 		super();
 		this.id = id;
@@ -49,6 +55,7 @@ public class CartaoCredito implements Serializable {
 		this.limiteDisponivelTotal = limiteDisponivelTotal;
 		this.limiteDisponivelAtual = limiteDisponivelAtual;
 		this.limiteDisponivelParaSaque = limiteDisponivelParaSaque;
+		this.dataValidade = dataValidade;
 		this.usuario = usuario;
 	}
 
@@ -123,4 +130,21 @@ public class CartaoCredito implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
+	public Compra getCompra() {
+		return compra;
+	}
+
+	public void setCompra(Compra compra) {
+		this.compra = compra;
+	}
+
+	public LocalDate getDataValidade() {
+		return dataValidade;
+	}
+
+	public void setDataValidade(LocalDate dataValidade) {
+		this.dataValidade = dataValidade;
+	}
+	
 }
