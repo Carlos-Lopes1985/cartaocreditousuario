@@ -52,11 +52,11 @@ public class DBService {
 		CartaoCredito cc2 = new CartaoCredito(null, "Alelo",  "4235879000023253", "237", 5500., 2000., 600.,LocalDate.now(), user2);
 		CartaoCredito cc3 = new CartaoCredito(null, "Sodex",  "4235879000023263", "236", 7500., 4000., 2700.,LocalDate.now(), user3);
 		
-		Loja l1 = new Loja(null,"lojas americanas",pe.encode("123"), "11792993706");
-		Loja l2 = new Loja(null,"Magazine luiza",pe.encode("123"), "11792993707");
-		Loja l3 = new Loja(null,"Pernambucanas",pe.encode("123"), "11792993708");
-		Loja l4 = new Loja(null,"Mariza",pe.encode("123"), "11792993709");
-		Loja l5 = new Loja(null,"CieloAdmin",pe.encode("123"), "11792993729");
+		Loja l1 = new Loja(null,"lojas americanas", "11792993706");
+		Loja l2 = new Loja(null,"Magazine luiza", "11792993707");
+		Loja l3 = new Loja(null,"Pernambucanas", "11792993708");
+		Loja l4 = new Loja(null,"Mariza", "11792993709");
+		Loja l5 = new Loja(null,"CieloAdmin", "11792993729");
 		l5.addPerfil(Perfil.ADMIN);
 		
 		lojaRepository.saveAll(Arrays.asList(l1,l2,l3,l4,l5));

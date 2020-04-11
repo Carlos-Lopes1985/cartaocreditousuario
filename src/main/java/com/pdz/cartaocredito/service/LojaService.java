@@ -33,6 +33,6 @@ public class LojaService {
 	}
 	public Loja fromDto(@Valid LojaNewDTO objDto) {
 		
-		return new Loja(null, objDto.getNome(),pe.encode(objDto.getSenha()),objDto.getCnpj());
+		return new Loja(null, objDto.getNome(),objDto.getCnpj());
 	}
 }

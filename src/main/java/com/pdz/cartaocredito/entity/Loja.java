@@ -31,8 +31,8 @@ public class Loja implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String nome;
-	@JsonIgnore
-	private String senha;
+//	@JsonIgnore
+//	private String senha;
 	
 	private String cnpj;
 	
@@ -51,11 +51,11 @@ public class Loja implements Serializable{
 		addPerfil(Perfil.CLIENTE);
 	}
 	
-	public Loja(Integer id, String nome, String senha, String cnpj) {
+	public Loja(Integer id, String nome, String cnpj) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.senha = senha;
+		//this.senha = senha;
 		this.cnpj = cnpj;
 		addPerfil(Perfil.CLIENTE);
 	}
@@ -100,13 +100,13 @@ public class Loja implements Serializable{
 		this.maquinaCartao = maquinaCartao;
 	}
 
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+//	public String getSenha() {
+//		return senha;
+//	}
+//
+//	public void setSenha(String senha) {
+//		this.senha = senha;
+//	}
 
 	public String getCnpj() {
 		return cnpj;
