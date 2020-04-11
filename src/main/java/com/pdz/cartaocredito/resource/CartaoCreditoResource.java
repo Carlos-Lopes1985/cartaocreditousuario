@@ -19,15 +19,6 @@ public class CartaoCreditoResource {
 	@Autowired
 	private CartaoCreditoService cartaoCreditoService;
 	
-//	@RequestMapping(value="/{numero}/{valor}", method = RequestMethod.GET)
-//	public ResponseEntity<CartaoCreditoDTO>findById(@PathVariable String numero, @PathVariable Double valor) 
-//			throws Exception{
-//		
-//		boolean obj = cartaoCreditoService.verificaSeCartaoTemLimite(numero,valor);
-//		
-//		return ResponseEntity.ok().body(obj);
-//		}
-	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<CartaoCredito>> findAll()throws Exception{
 		

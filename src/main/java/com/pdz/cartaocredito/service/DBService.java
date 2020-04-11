@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.pdz.cartaocredito.entity.CartaoCredito;
@@ -12,6 +13,7 @@ import com.pdz.cartaocredito.entity.Compra;
 import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
 import com.pdz.cartaocredito.entity.Usuario;
+import com.pdz.cartaocredito.enums.Perfil;
 import com.pdz.cartaocredito.repository.CartaoCreditoRepository;
 import com.pdz.cartaocredito.repository.CompraRepository;
 import com.pdz.cartaocredito.repository.LojaRepository;
@@ -36,6 +38,9 @@ public class DBService {
 	@Autowired
 	private MaquinaCartaoCreditoRepository maquinaCartaoCreditoRepository;
 	
+	@Autowired
+	private BCryptPasswordEncoder pe;
+	
 	public void instanciateTestDatabase()throws ParseException{
 		
 		Usuario user1 = new Usuario(null,"Carlos",LocalDate.now(),"11792993706","123");
@@ -47,12 +52,14 @@ public class DBService {
 		CartaoCredito cc2 = new CartaoCredito(null, "Alelo",  "4235879000023253", "237", 5500., 2000., 600.,LocalDate.now(), user2);
 		CartaoCredito cc3 = new CartaoCredito(null, "Sodex",  "4235879000023263", "236", 7500., 4000., 2700.,LocalDate.now(), user3);
 		
-		Loja l1 = new Loja(null,"lojas americanas");
-		Loja l2 = new Loja(null,"Magazine luiza");
-		Loja l3 = new Loja(null,"Pernambucanas");
-		Loja l4 = new Loja(null,"Mariza");
+		Loja l1 = new Loja(null,"lojas americanas",pe.encode("123"), "11792993706");
+		Loja l2 = new Loja(null,"Magazine luiza",pe.encode("123"), "11792993707");
+		Loja l3 = new Loja(null,"Pernambucanas",pe.encode("123"), "11792993708");
+		Loja l4 = new Loja(null,"Mariza",pe.encode("123"), "11792993709");
+		Loja l5 = new Loja(null,"CieloAdmin",pe.encode("123"), "11792993729");
+		l5.addPerfil(Perfil.ADMIN);
 		
-		lojaRepository.saveAll(Arrays.asList(l1,l2,l3,l4));
+		lojaRepository.saveAll(Arrays.asList(l1,l2,l3,l4,l5));
 		
 		MaquinaCartaoCredito m1 = new MaquinaCartaoCredito(null, "222fffrrr55", null, l1);
 		MaquinaCartaoCredito m2 = new MaquinaCartaoCredito(null, "222fffrrr56", null, l2);
