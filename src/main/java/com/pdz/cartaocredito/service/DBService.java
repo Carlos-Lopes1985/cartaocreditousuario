@@ -61,16 +61,16 @@ public class DBService {
 		
 		lojaRepository.saveAll(Arrays.asList(l1,l2,l3,l4,l5));
 		
-		MaquinaCartaoCredito m1 = new MaquinaCartaoCredito(null, "222fffrrr55", null, l1);
-		MaquinaCartaoCredito m2 = new MaquinaCartaoCredito(null, "222fffrrr56", null, l2);
-		MaquinaCartaoCredito m3 = new MaquinaCartaoCredito(null, "222fffrrr57", null, l2);
-		MaquinaCartaoCredito m4 = new MaquinaCartaoCredito(null, "222fffrrr58", null, l3);
-		MaquinaCartaoCredito m5 = new MaquinaCartaoCredito(null, "222fffrrr59", null, l3);
-		MaquinaCartaoCredito m6 = new MaquinaCartaoCredito(null, "222fffrrr51", null, l2);
-		MaquinaCartaoCredito m7 = new MaquinaCartaoCredito(null, "222fffrrr52", null, l4);
-		MaquinaCartaoCredito m8 = new MaquinaCartaoCredito(null, "222fffrrr53", null, l1);
-		MaquinaCartaoCredito m9 = new MaquinaCartaoCredito(null, "222fffrrr54", null, l2);
-		MaquinaCartaoCredito m10 = new MaquinaCartaoCredito(null,"222fffrrr55", null, l1);
+		MaquinaCartaoCredito m1 = new MaquinaCartaoCredito(null, "222fffrrr55", pe.encode("123"), l1);
+		MaquinaCartaoCredito m2 = new MaquinaCartaoCredito(null, "222fffrrr56", pe.encode("123"), l2);
+		MaquinaCartaoCredito m3 = new MaquinaCartaoCredito(null, "222fffrrr57", pe.encode("123"), l2);
+		MaquinaCartaoCredito m4 = new MaquinaCartaoCredito(null, "222fffrrr58", pe.encode("123"), l3);
+		MaquinaCartaoCredito m5 = new MaquinaCartaoCredito(null, "222fffrrr59", pe.encode("123"), l3);
+		MaquinaCartaoCredito m6 = new MaquinaCartaoCredito(null, "222fffrrr51", pe.encode("123"), l2);
+		MaquinaCartaoCredito m7 = new MaquinaCartaoCredito(null, "222fffrrr52", pe.encode("123"), l4);
+		MaquinaCartaoCredito m8 = new MaquinaCartaoCredito(null, "222fffrrr53", pe.encode("123"), l1);
+		MaquinaCartaoCredito m9 = new MaquinaCartaoCredito(null, "222fffrrr54", pe.encode("123"), l2);
+		MaquinaCartaoCredito m10 = new MaquinaCartaoCredito(null,"222fffrrr55", pe.encode("123"), l1);
 		
 		maquinaCartaoCreditoRepository.saveAll(Arrays.asList(m1,m2,m3,m4,m5,m6,m7,m8,m9,m10));
 		
@@ -85,6 +85,5 @@ public class DBService {
 		usuarioRepository.saveAll(Arrays.asList(user1,user2,user3));
 		cartaoCreditoRepository.saveAll(Arrays.asList(cc,cc1,cc2,cc3));
 		compraRepository.saveAll(Arrays.asList(c1,c2,c3,c4,c5,c6,c7));
-		
 	}
 }

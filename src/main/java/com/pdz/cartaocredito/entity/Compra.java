@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,8 +28,8 @@ public class Compra implements Serializable {
 	private Double valor;
 	private Integer qtdeParcela;
 	
-	@OneToOne
-	@JoinColumn(name="loja_id")
+	@ManyToOne
+	@JoinColumn(name = "id_loja")
 	private Loja loja;
 	
 	@JsonIgnore
@@ -40,7 +39,7 @@ public class Compra implements Serializable {
 	
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name=" cartao_id")
+	@JoinColumn(name = "cartao_id")
 	private CartaoCredito cartaoCredito;
 
 	public Compra() {

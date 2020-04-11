@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pdz.cartaocredito.enums.Perfil;
@@ -38,11 +37,11 @@ public class Loja implements Serializable{
 	private String cnpj;
 	
 	@JsonIgnore
-	@OneToOne( mappedBy="loja")
-	private Compra compra;
+	@OneToMany(mappedBy = "loja")
+	private List<Compra> compra = new ArrayList<Compra>();
 	
-	@OneToMany(mappedBy="loja",fetch = FetchType.EAGER)
-	private List<MaquinaCartaoCredito>maquinaCartao = new ArrayList<MaquinaCartaoCredito>();
+	@OneToMany(mappedBy = "loja", fetch = FetchType.EAGER)
+	private List<MaquinaCartaoCredito> maquinaCartao = new ArrayList<MaquinaCartaoCredito>();
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name="PERFIS")
@@ -84,12 +83,21 @@ public class Loja implements Serializable{
 		this.nome = nome;
 	}
 
-	public Compra getCompra() {
+	
+	public List<Compra> getCompras() {
 		return compra;
 	}
 
-	public void setCompra(Compra compra) {
-		this.compra = compra;
+	public void setCompras(List<Compra> compras) {
+		this.compra = compras;
+	}
+
+	public List<MaquinaCartaoCredito> getMaquinaCartao() {
+		return maquinaCartao;
+	}
+
+	public void setMaquinaCartao(List<MaquinaCartaoCredito> maquinaCartao) {
+		this.maquinaCartao = maquinaCartao;
 	}
 
 	public String getSenha() {

@@ -8,4 +8,5 @@ import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
 @Repository
 public interface MaquinaCartaoCreditoRepository extends JpaRepository<MaquinaCartaoCredito, Integer> {
 
+	MaquinaCartaoCredito findBySerial(String serial);
 }
