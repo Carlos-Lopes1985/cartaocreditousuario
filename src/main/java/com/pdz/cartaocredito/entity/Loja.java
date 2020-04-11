@@ -1,12 +1,15 @@
 package com.pdz.cartaocredito.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,12 +26,18 @@ public class Loja implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String nome;
-
 	@JsonIgnore
-	@OneToOne()
-	@JoinColumn(name="loja_id")
+	private String senha;
+	
+	private String cnpj;
+	
+	@JsonIgnore
+	@OneToOne( mappedBy="loja")
 	private Compra compra;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy="loja")
+	private List<MaquinaCartaoCredito>maquinaCartao = new ArrayList<MaquinaCartaoCredito>();
 	
 	public Loja() {
 		super();
@@ -63,14 +72,22 @@ public class Loja implements Serializable{
 	public void setCompra(Compra compra) {
 		this.compra = compra;
 	}
-	
-	
 
-//	public List<Compra> getCompras() {
-//		return compras;
-//	}
-//
-//	public void setCompras(List<Compra> compras) {
-//		this.compras = compras;
-//	}
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+	
+	
 }

@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import com.pdz.cartaocredito.entity.CartaoCredito;
 import com.pdz.cartaocredito.entity.Compra;
 import com.pdz.cartaocredito.entity.Loja;
+import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
 import com.pdz.cartaocredito.entity.Usuario;
 import com.pdz.cartaocredito.repository.CartaoCreditoRepository;
 import com.pdz.cartaocredito.repository.CompraRepository;
 import com.pdz.cartaocredito.repository.LojaRepository;
+import com.pdz.cartaocredito.repository.MaquinaCartaoCreditoRepository;
 import com.pdz.cartaocredito.repository.UsuarioRepository;
 
 @Service
@@ -30,6 +32,9 @@ public class DBService {
 	
 	@Autowired
 	private LojaRepository lojaRepository;
+	
+	@Autowired
+	private MaquinaCartaoCreditoRepository maquinaCartaoCreditoRepository;
 	
 	public void instanciateTestDatabase()throws ParseException{
 		
@@ -48,6 +53,19 @@ public class DBService {
 		Loja l4 = new Loja(null,"Mariza");
 		
 		lojaRepository.saveAll(Arrays.asList(l1,l2,l3,l4));
+		
+		MaquinaCartaoCredito m1 = new MaquinaCartaoCredito(null, "222fffrrr55", null, l1);
+		MaquinaCartaoCredito m2 = new MaquinaCartaoCredito(null, "222fffrrr56", null, l2);
+		MaquinaCartaoCredito m3 = new MaquinaCartaoCredito(null, "222fffrrr57", null, l2);
+		MaquinaCartaoCredito m4 = new MaquinaCartaoCredito(null, "222fffrrr58", null, l3);
+		MaquinaCartaoCredito m5 = new MaquinaCartaoCredito(null, "222fffrrr59", null, l3);
+		MaquinaCartaoCredito m6 = new MaquinaCartaoCredito(null, "222fffrrr51", null, l2);
+		MaquinaCartaoCredito m7 = new MaquinaCartaoCredito(null, "222fffrrr52", null, l4);
+		MaquinaCartaoCredito m8 = new MaquinaCartaoCredito(null, "222fffrrr53", null, l1);
+		MaquinaCartaoCredito m9 = new MaquinaCartaoCredito(null, "222fffrrr54", null, l2);
+		MaquinaCartaoCredito m10 = new MaquinaCartaoCredito(null,"222fffrrr55", null, l1);
+		
+		maquinaCartaoCreditoRepository.saveAll(Arrays.asList(m1,m2,m3,m4,m5,m6,m7,m8,m9,m10));
 		
 		Compra c1 = new Compra(null,LocalDate.now(),1,200.,10,l1,user3,cc);
 		Compra c2 = new Compra(null,LocalDate.now(),1,500.,1,l2,user1,cc3);

@@ -3,7 +3,6 @@ package com.pdz.cartaocredito.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +29,8 @@ public class Compra implements Serializable {
 	private Double valor;
 	private Integer qtdeParcela;
 	
-	@OneToOne( mappedBy="compra")
+	@OneToOne
+	@JoinColumn(name="loja_id")
 	private Loja loja;
 	
 	@JsonIgnore
