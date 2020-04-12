@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,6 +32,11 @@ public class Usuario implements Serializable{
 	private LocalDate dataNascimento;
 	private String    cpf;
 	private String    senha;
+	private String    email;
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name="TELEFONES")
+	private Set<String> telefones = new HashSet<>();
 	
 	@OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
 	private Set<CartaoCredito>cartoes = new HashSet<>();
@@ -40,14 +48,14 @@ public class Usuario implements Serializable{
 		super();
 	}
 
-	public Usuario(Integer idUsuario, String nome, LocalDate dataNascimento, String cpf, String senha) {
+	public Usuario(Integer idUsuario, String nome, LocalDate dataNascimento, String cpf, String senha, String email) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
 		this.cpf = cpf;
 		this.senha = senha;
-		
+		this.email = email;
 	}
 
 	@Override
@@ -112,5 +120,20 @@ public class Usuario implements Serializable{
 	public void setCompras(List<Compra> compras) {
 		this.compras = compras;
 	}
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Set<String> getTelefones() {
+		return telefones;
+	}
+
+	public void setTelefones(Set<String> telefones) {
+		this.telefones = telefones;
+	}
 }

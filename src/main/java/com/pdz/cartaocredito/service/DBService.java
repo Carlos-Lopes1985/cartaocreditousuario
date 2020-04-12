@@ -43,9 +43,12 @@ public class DBService {
 	
 	public void instanciateTestDatabase()throws ParseException{
 		
-		Usuario user1 = new Usuario(null,"Carlos",LocalDate.now(),"11792993706","123");
-		Usuario user2 = new Usuario(null,"Roberto",LocalDate.now(),"11792993707","123");
-		Usuario user3 = new Usuario(null,"Juvenal",LocalDate.now(),"11792993708","123");
+		Usuario user1 = new Usuario(null,"Carlos",LocalDate.now(),"11792993706",pe.encode("123"),"caka19_rj@hotmail.com");
+		Usuario user2 = new Usuario(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("123"),"caka19_rj@hotmail.com");
+		Usuario user3 = new Usuario(null,"Juvenal",LocalDate.now(),"11792993708",pe.encode("123"),"carlosslopes1985@hotmail.com");
+		user1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+		user2.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+		user3.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 		
 		CartaoCredito cc  = new CartaoCredito(null, "Master", "4235879000023233", "239", 2500., 1000., 200.,LocalDate.now(), user1);
 		CartaoCredito cc1 = new CartaoCredito(null, "Visa",   "4235879000023243", "238", 1500., 200., 400.,LocalDate.now(), user1);
