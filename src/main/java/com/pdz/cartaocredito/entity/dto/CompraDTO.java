@@ -10,13 +10,14 @@ public class CompraDTO {
 	private Integer idUsuario;
 	private String numeroCartao;
 	private String codSeguranca;
+	private String senha;
 	
 	public CompraDTO() {
 		super();
 	}
 	
 	public CompraDTO(LocalDate dataCompra, Double valor, Integer loja, Integer idUsuario, String numeroCartao,
-			String codSeguranca) {
+			String codSeguranca,String senha) {
 		super();
 		this.dataCompra = dataCompra;
 		this.valor = valor;
@@ -24,6 +25,7 @@ public class CompraDTO {
 		this.idUsuario = idUsuario;
 		this.numeroCartao = numeroCartao;
 		this.codSeguranca = codSeguranca;
+		this.senha = senha;
 	}
 
 	public LocalDate getDataCompra() {
@@ -64,4 +66,13 @@ public class CompraDTO {
 	public void setCodSeguranca(String codSeguranca) {
 		this.codSeguranca = codSeguranca;
 	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
 }

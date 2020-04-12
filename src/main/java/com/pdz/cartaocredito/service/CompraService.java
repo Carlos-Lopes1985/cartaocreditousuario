@@ -1,5 +1,7 @@
 package com.pdz.cartaocredito.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,8 +10,10 @@ import com.pdz.cartaocredito.entity.Compra;
 import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.Usuario;
 import com.pdz.cartaocredito.entity.dto.CompraDTO;
+import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CompraRepository;
 import com.pdz.cartaocredito.service.validations.ValidaCartaoCredito;
+import com.pdz.cartaocredito.service.validations.ValidaUsuario;
 
 @Service
 public class CompraService {
@@ -26,11 +30,15 @@ public class CompraService {
 	@Autowired
 	private LojaService lojaService;
 	
+	@Autowired
+	private ValidaUsuario validaUsuario;
+	
 	public Compra salvarCompras(CompraDTO compra) throws Exception {
 		
 		Compra compras = fromDTO(compra);
 		
 		validaCompra.verificaInformacoesCartao(compras);
+		validaUsuario.verificaSenhaUsuario(compras.getUsuario());
 		
 		atualizaLimiteDisponivel(compra);
 		
@@ -69,6 +77,23 @@ public class CompraService {
 		
 		cartaoCreditoService.salvar(cartao);
 		
+	}
+
+	public List<Compra> buscarTodos() {
+		return compraRepository.findAll();
+	}
+
+	public Compra buscarCompra(Integer id) {
+		
+		Compra compra = new Compra();
+		
+		try {
+			compra = compraRepository.findById(id).get();
+		} catch (Exception e) {
+			throw new ObjectNotFoundException("Compra não encontrada!");
+		}
+		
+		return compra;
 	}
 	
 }
