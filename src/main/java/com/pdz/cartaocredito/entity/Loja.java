@@ -31,8 +31,6 @@ public class Loja implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String nome;
-//	@JsonIgnore
-//	private String senha;
 	
 	private String cnpj;
 	
@@ -40,7 +38,8 @@ public class Loja implements Serializable{
 	@OneToMany(mappedBy = "loja")
 	private List<Compra> compra = new ArrayList<Compra>();
 	
-	@OneToMany(mappedBy = "loja", fetch = FetchType.EAGER)
+	@JsonIgnore
+	@OneToMany(mappedBy = "loja")
 	private List<MaquinaCartaoCredito> maquinaCartao = new ArrayList<MaquinaCartaoCredito>();
 	
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -83,7 +82,7 @@ public class Loja implements Serializable{
 		this.nome = nome;
 	}
 
-	
+	@JsonIgnore
 	public List<Compra> getCompras() {
 		return compra;
 	}
@@ -99,14 +98,6 @@ public class Loja implements Serializable{
 	public void setMaquinaCartao(List<MaquinaCartaoCredito> maquinaCartao) {
 		this.maquinaCartao = maquinaCartao;
 	}
-
-//	public String getSenha() {
-//		return senha;
-//	}
-//
-//	public void setSenha(String senha) {
-//		this.senha = senha;
-//	}
 
 	public String getCnpj() {
 		return cnpj;

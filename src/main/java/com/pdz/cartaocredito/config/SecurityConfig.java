@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.pdz.cartaocredito.security.JWTAuthenticationFilter;
+import com.pdz.cartaocredito.security.JWTAutorizationFilter;
 import com.pdz.cartaocredito.security.JWTUtil;
 
 @Configuration
@@ -37,35 +38,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	private JWTUtil jwtUtil;
 	
 	private static final String[] PUBLIC_MATCHERS = { 
-			"/h2-console/**",
-			"/lojas/**"
+			"/h2-console/**"
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_GET = { 
 			"/cartaocredito/**",
-			"/compras/**"
+			"/compras/**",
+			"/lojas/**"
 	};
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		//Libera o acesso para o H2 console(banco em memória)
-		if(Arrays.asList(env.getActiveProfiles()).contains("test")) {
-			http.headers().frameOptions().disable();
-		}
+		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
+            http.headers().frameOptions().disable();
+        }
 		
 		http.cors().and().csrf().disable();
-		
 		http.authorizeRequests()
-		.antMatchers(HttpMethod.GET,PUBLIC_MATCHERS_GET).permitAll() // permite somente o metodo get para os usuários
-		.antMatchers(PUBLIC_MATCHERS)
-								.permitAll()
-								.anyRequest()
-								.authenticated();
-		//assegura que não será criado nenhuma sessão
+			//.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
+			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+			.antMatchers(PUBLIC_MATCHERS).permitAll()
+			.anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JWTAutorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
+	
 	
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
