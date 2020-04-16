@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pdz.cartaocredito.entity.Compra;
-import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.dto.CompraDTO;
 import com.pdz.cartaocredito.service.CompraService;
 
@@ -36,7 +36,7 @@ public class CompraResource {
 	
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Compra>efetuarCompra(CompraDTO compra)throws Exception{
+	public ResponseEntity<Compra>efetuarCompra(@RequestBody CompraDTO compra)throws Exception{
 		
 		compra.setDataCompra(LocalDate.now()); 
 			

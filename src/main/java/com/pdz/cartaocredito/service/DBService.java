@@ -43,10 +43,16 @@ public class DBService {
 	
 	public void instanciateTestDatabase()throws ParseException{
 		
-		Usuario user1 = new Usuario(null,"Carlos",LocalDate.now(),"11792993706",pe.encode("123"),"caka19_rj@hotmail.com");
-		Usuario user2 = new Usuario(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("123"),"caka19_rj@hotmail.com");
-		Usuario user3 = new Usuario(null,"Juvenal",LocalDate.now(),"11792993708",pe.encode("123"),"carlosslopes1985@hotmail.com");
-		user1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+		Usuario user1 = new Usuario(null,"Carlos",LocalDate.now(),"11792993706", pe.encode("12345") ,"caka19_rj@hotmail.com");
+		Usuario user2 = new Usuario(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("12345") ,"caka19_rj@hotmail.com");
+		Usuario user3 = new Usuario(null,"Juvenal",LocalDate.now(),"11792993708",pe.encode("12345") ,"carlosslopes1985@hotmail.com");
+		Usuario user4 = new Usuario(null,"Carlos",LocalDate.now(),"11792993706", pe.encode("12345") ,"caka19_rj@hotmail.com");
+		Usuario user5 = new Usuario(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("12345") ,"caka19_rj@hotmail.com");
+		Usuario user6 = new Usuario(null,"Juvenal",LocalDate.now(),"11792993708",pe.encode("123678"),"carlosslopes1985@hotmail.com");
+		Usuario user7 = new Usuario(null,"Carlos",LocalDate.now(),"11792993706", pe.encode("123678"),"caka19_rj@hotmail.com");
+		Usuario user8 = new Usuario(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("123678"),"caka19_rj@hotmail.com");
+		Usuario user9 = new Usuario(null,"Juvenal",LocalDate.now(),"11792993708",pe.encode("123678"),"carlosslopes1985@hotmail.com");
+		user1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));               
 		user2.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 		user3.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 		
@@ -85,7 +91,7 @@ public class DBService {
 		Compra c6 = new Compra(null,LocalDate.now(),1,500.,1,l2,user2,cc1);
 		Compra c7 = new Compra(null,LocalDate.now(),1,200.,1,l3,user3,cc3);
 		
-		usuarioRepository.saveAll(Arrays.asList(user1,user2,user3));
+		usuarioRepository.saveAll(Arrays.asList(user1,user2,user3,user4,user5,user6,user7,user8,user9));
 		cartaoCreditoRepository.saveAll(Arrays.asList(cc,cc1,cc2,cc3));
 		compraRepository.saveAll(Arrays.asList(c1,c2,c3,c4,c5,c6,c7));
 	}

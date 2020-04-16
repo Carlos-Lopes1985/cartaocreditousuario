@@ -21,8 +21,17 @@ public class ValidaUsuario {
 		
 		Usuario user = usuarioRepository.findById(usuario.getIdUsuario()).get();
 		
-		if(user.getSenha() != pe.encode(usuario.getSenha())) {
+		usuario.setSenha(pe.encode(usuario.getSenha()));
+		
+		System.out.println("1 - ############# "+ usuario.getSenha());
+		
+		if(!(user.getSenha().equals(pe.encode(usuario.getSenha())))) {
+			
+			System.out.println("2 - ############################ SENHA BANCO" +user.getSenha());
+			
+			System.out.println("3 - ############################ SENHA DIGITADA" +usuario.getSenha());
 			throw new MethodFailureException("Senha digitada é inválida");
+			
 		}
 		return true;
 	}

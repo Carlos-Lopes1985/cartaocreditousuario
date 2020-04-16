@@ -15,6 +15,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	
 	@Autowired
 	private MaquinaCartaoCreditoRepository maquinaCartaoCreditoRepository;
+	
 	@Override
 	public UserDetails loadUserByUsername(String serial) throws UsernameNotFoundException {
 		

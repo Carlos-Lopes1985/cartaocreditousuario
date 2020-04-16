@@ -2,27 +2,33 @@ package com.pdz.cartaocredito.entity.dto;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotBlank;
+
 public class CompraDTO {
 	
+	@NotBlank(message="Preenchimento data compra obrigatório")
 	private LocalDate dataCompra;
+	@NotBlank(message="Preenchimento valor obrigatório")
 	private Double valor;
-	private Integer loja;
-	private Integer idUsuario;
+	@NotBlank(message="Preenchimento serial maquina obrigatório")
+	private String serial;
+	@NotBlank(message="Preenchimento numero cartão de crédito obrigatório")
 	private String numeroCartao;
+	@NotBlank(message="Preenchimento cod segurança cartão de crédito obrigatório")
 	private String codSeguranca;
+	@NotBlank(message="Preenchimento senha cartão de crédito obrigatório")
 	private String senha;
 	
 	public CompraDTO() {
 		super();
 	}
 	
-	public CompraDTO(LocalDate dataCompra, Double valor, Integer loja, Integer idUsuario, String numeroCartao,
+	public CompraDTO(LocalDate dataCompra, Double valor, String serial, String numeroCartao,
 			String codSeguranca,String senha) {
 		super();
 		this.dataCompra = dataCompra;
 		this.valor = valor;
-		this.loja = loja;
-		this.idUsuario = idUsuario;
+		this.serial = serial;
 		this.numeroCartao = numeroCartao;
 		this.codSeguranca = codSeguranca;
 		this.senha = senha;
@@ -40,18 +46,13 @@ public class CompraDTO {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-	public Integer getLoja() {
-		return loja;
+	public String getSerial() {
+		return serial;
 	}
-	public void setLoja(Integer loja) {
-		this.loja = loja;
+	public void setLoja(String serial) {
+		this.serial = serial;
 	}
-	public Integer getIdUsuario() {
-		return idUsuario;
-	}
-	public void setIdUsuario(Integer idUsuario) {
-		this.idUsuario = idUsuario;
-	}
+	
 	public String getNumeroCartao() {
 		return numeroCartao;
 	}

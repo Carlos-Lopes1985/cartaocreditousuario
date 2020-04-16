@@ -1,7 +1,17 @@
 package com.pdz.cartaocredito.entity.dto;
 
-public class LojaNewDTO {
+import java.io.Serializable;
+
+import javax.validation.constraints.NotBlank;
+
+public class LojaNewDTO implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	@NotBlank(message="Preenchimento email obrigatório")
 	private String nome;
 	private String senha;
 	private String cnpj;
