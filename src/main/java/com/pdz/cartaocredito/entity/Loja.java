@@ -50,6 +50,7 @@ public class Loja implements Serializable{
 		addPerfil(Perfil.CLIENTE);
 	}
 	
+	
 	public Loja(Integer id, String nome, String cnpj) {
 		super();
 		this.id = id;
