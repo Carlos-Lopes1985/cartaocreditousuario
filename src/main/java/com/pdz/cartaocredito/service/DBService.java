@@ -70,7 +70,7 @@ public class DBService {
 		
 		lojaRepository.saveAll(Arrays.asList(l1,l2,l3,l4,l5));
 		
-		MaquinaCartaoCredito m1 = new MaquinaCartaoCredito(null, "222fffrrr55", pe.encode("123"), l1);
+		MaquinaCartaoCredito m1 = new MaquinaCartaoCredito(null, "222fffrrr60", pe.encode("123"), l1);
 		MaquinaCartaoCredito m2 = new MaquinaCartaoCredito(null, "222fffrrr56", pe.encode("123"), l2);
 		MaquinaCartaoCredito m3 = new MaquinaCartaoCredito(null, "222fffrrr57", pe.encode("123"), l2);
 		MaquinaCartaoCredito m4 = new MaquinaCartaoCredito(null, "222fffrrr58", pe.encode("123"), l3);
@@ -80,8 +80,9 @@ public class DBService {
 		MaquinaCartaoCredito m8 = new MaquinaCartaoCredito(null, "222fffrrr53", pe.encode("123"), l1);
 		MaquinaCartaoCredito m9 = new MaquinaCartaoCredito(null, "222fffrrr54", pe.encode("123"), l2);
 		MaquinaCartaoCredito m10 = new MaquinaCartaoCredito(null,"222fffrrr55", pe.encode("123"), l1);
+		MaquinaCartaoCredito m11 = new MaquinaCartaoCredito(null,"222fffrrr61", pe.encode("123"), l5);
 		
-		maquinaCartaoCreditoRepository.saveAll(Arrays.asList(m1,m2,m3,m4,m5,m6,m7,m8,m9,m10));
+		maquinaCartaoCreditoRepository.saveAll(Arrays.asList(m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11));
 		
 		Compra c1 = new Compra(null,LocalDate.now(),1,200.,10,l1,user3,cc);
 		Compra c2 = new Compra(null,LocalDate.now(),1,500.,1,l2,user1,cc3);

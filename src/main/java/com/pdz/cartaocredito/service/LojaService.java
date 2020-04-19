@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pdz.cartaocredito.entity.Loja;
-import com.pdz.cartaocredito.entity.dto.LojaNewDTO;
+import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
 import com.pdz.cartaocredito.repository.LojaRepository;
 
 @Service
@@ -28,7 +28,7 @@ public class LojaService {
 		return lojaRepository.save(loja);
 	}
 	
-	public Loja fromDto(@Valid LojaNewDTO objDto) {
+	public Loja fromDto(@Valid LojaNovoDTO objDto) {
 		
 		return new Loja(null, objDto.getNome(),objDto.getCnpj());
 	}

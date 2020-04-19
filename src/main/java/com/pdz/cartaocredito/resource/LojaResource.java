@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.pdz.cartaocredito.entity.Loja;
-import com.pdz.cartaocredito.entity.dto.LojaNewDTO;
+import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
 import com.pdz.cartaocredito.service.LojaService;
 
 @RestController
@@ -37,8 +38,9 @@ public class LojaResource {
 		return ResponseEntity.ok().body(lojaService.buscarLoja(id));
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody LojaNewDTO objDto){
+	public ResponseEntity<Void> insert(@Valid @RequestBody LojaNovoDTO objDto){
 		
 		Loja obj = lojaService.fromDto(objDto);
 		

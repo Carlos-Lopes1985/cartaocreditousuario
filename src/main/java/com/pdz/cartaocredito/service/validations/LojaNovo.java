@@ -8,10 +8,10 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Constraint(validatedBy = LojaInsertValidator.class)
+@Constraint(validatedBy = LojaNovoValidador.class)
 @Target({ ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LojaInsert {
+public @interface LojaNovo {
 	
 	String message() default "Erro Validação";
 	

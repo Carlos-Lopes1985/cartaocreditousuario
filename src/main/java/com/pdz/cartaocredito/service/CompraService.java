@@ -37,14 +37,14 @@ public class CompraService {
 	
 	public Compra salvarCompras(CompraDTO compra) throws Exception {
 		
-		Compra compras = fromDTO(compra);
+		Compra comprasObj = fromDTO(compra);
 		
-		validaCompra.verificaInformacoesCartao(compras);
-		validaUsuario.verificaSenhaUsuario(compras.getUsuario());
+		validaCompra.verificaInformacoesCartao(comprasObj);
+		validaUsuario.verificaSenhaUsuario(comprasObj.getUsuario());
 		
 		atualizaLimiteDisponivel(compra);
 		
-		return compraRepository.save(compras);
+		return compraRepository.save(comprasObj);
 	}
 	
 	public Compra fromDTO(CompraDTO obj) {

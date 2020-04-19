@@ -6,24 +6,24 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.pdz.cartaocredito.entity.dto.LojaNewDTO;
+import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
 import com.pdz.cartaocredito.resource.exception.FieldMessage;
-import com.pdz.cartaocredito.service.validations.util.BR;
+import com.pdz.cartaocredito.service.validations.util.CpfCnpj;
 
-public class LojaInsertValidator implements ConstraintValidator<LojaInsert, LojaNewDTO>{
+public class LojaNovoValidador implements ConstraintValidator<LojaNovo, LojaNovoDTO>{
 
 
 	@Override
-	public void initialize(LojaInsert constraintAnnotation) {
+	public void initialize(LojaNovo constraintAnnotation) {
 	
 	}
 	
 	@Override
-	public boolean isValid(LojaNewDTO objDto, ConstraintValidatorContext context) {
+	public boolean isValid(LojaNovoDTO objDto, ConstraintValidatorContext context) {
 		
 		List<FieldMessage> list = new ArrayList<>();
 		
-		if(!BR.isValidCNPJ(objDto.getCnpj())) {
+		if(!CpfCnpj.isValidCNPJ(objDto.getCnpj())) {
 			list.add(new FieldMessage("Cnpj", "CNPJ Inválido"));
 		}
 		

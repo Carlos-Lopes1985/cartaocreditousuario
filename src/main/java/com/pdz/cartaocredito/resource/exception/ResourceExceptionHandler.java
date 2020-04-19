@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.pdz.cartaocredito.exception.DataIntegrityException;
+import com.pdz.cartaocredito.exception.IntegrityConstraintViolationException;
 import com.pdz.cartaocredito.exception.MethodFailureException;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 
@@ -37,6 +38,14 @@ public class ResourceExceptionHandler {
 	
 	@ExceptionHandler(DataIntegrityException.class)
 	public ResponseEntity<StandardError>dataIntegrity(DataIntegrityException e, HttpServletRequest request){
+		
+		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(IntegrityConstraintViolationException.class)
+	public ResponseEntity<StandardError>integrityConstraintViolationException(IntegrityConstraintViolationException e, HttpServletRequest request){
 		
 		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
 		
