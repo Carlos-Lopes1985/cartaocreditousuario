@@ -35,6 +35,9 @@ public class CompraService {
 	@Autowired
 	private MaquinaCartaoCreditoRepository maqRepository;
 	
+	@Autowired
+	private EmailService emailService;
+	
 	public Compra salvarCompras(CompraDTO compra) throws Exception {
 		
 		Compra comprasObj = fromDTO(compra);
@@ -44,7 +47,7 @@ public class CompraService {
 		
 		atualizaLimiteDisponivel(compra);
 		
-		System.out.println(comprasObj);
+		emailService.sendOrderConfirmationEmail(comprasObj);
 		
 		return compraRepository.save(comprasObj);
 	}
