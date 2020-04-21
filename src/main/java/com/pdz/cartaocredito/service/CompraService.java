@@ -55,12 +55,11 @@ public class CompraService {
 		Usuario usuObj = usuarioRepository.findById(comprasObj.getUsuario().getIdUsuario()).get();
 		
 		comprasObj.setUsuario(usuObj);
-		System.out.println("###################"+comprasObj.getUsuario().getEmail());
 		
 		compraRepository.save(comprasObj);
 		
 		try {
-			EnviarEmail(comprasObj);
+			enviarEmail(comprasObj);
 		} catch (Exception e) {
 			throw new DataIntegrityException("Email não enviado");
 		} 
@@ -68,10 +67,9 @@ public class CompraService {
 		return comprasObj;
 	}
 	
-	public void EnviarEmail(Compra compraObj)throws Exception{
-		
-			emailService.sendOrderConfirmationEmail(compraObj);
-		System.out.println("######################Passou aki");
+	public void enviarEmail(Compra compraObj) throws Exception {
+
+		emailService.sendOrderConfirmationHtmlEmail(compraObj);
 	}
 	
 	public Compra fromDTO(CompraDTO obj) {

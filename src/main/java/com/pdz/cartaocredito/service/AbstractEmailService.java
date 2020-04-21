@@ -2,8 +2,16 @@ package com.pdz.cartaocredito.service;
 
 import java.util.Date;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import com.pdz.cartaocredito.entity.Compra;
 
@@ -11,6 +19,12 @@ public abstract class AbstractEmailService implements EmailService {
 
 	@Value("${default.sender}")
 	private String sender;
+	
+	@Autowired
+	private TemplateEngine templateEngine;
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
 	
 	@Override
 	public void sendOrderConfirmationEmail(Compra compra) {
@@ -30,7 +44,39 @@ public abstract class AbstractEmailService implements EmailService {
 		return sm;
 	}
 
+	protected String htmlFromTemplateCompra(Compra compra) {
+		
+		Context context = new Context();
+		
+		context.setVariable("compra", compra);
+		
+		return templateEngine.process("email/confirmacaoCompra", context);
+	}
 	
-	
-	
+	@Override
+	public void sendOrderConfirmationHtmlEmail(Compra compra) {
+		
+		try {
+			MimeMessage mm = prepareMimeMessageFromCompra(compra);
+			sendHtmlEmail(mm);
+		} catch (Exception e) {
+			sendOrderConfirmationEmail(compra);
+		}
+	}
+
+
+	protected MimeMessage prepareMimeMessageFromCompra(Compra compra) throws MessagingException {
+		
+		MimeMessage mm = javaMailSender.createMimeMessage();
+		
+		MimeMessageHelper mmh = new MimeMessageHelper(mm, true);
+		
+		mmh.setTo(compra.getUsuario().getEmail());
+		mmh.setFrom(sender);
+		mmh.setSubject("Compra confirmada! COD: " +compra.getId());
+		mmh.setSentDate(new Date(System.currentTimeMillis()));
+		mmh.setText(htmlFromTemplateCompra(compra),true);
+		
+		return mm;
+	}
 }
