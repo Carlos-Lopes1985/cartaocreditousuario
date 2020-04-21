@@ -11,9 +11,11 @@ import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
 import com.pdz.cartaocredito.entity.Usuario;
 import com.pdz.cartaocredito.entity.dto.CompraDTO;
+import com.pdz.cartaocredito.exception.DataIntegrityException;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CompraRepository;
 import com.pdz.cartaocredito.repository.MaquinaCartaoCreditoRepository;
+import com.pdz.cartaocredito.repository.UsuarioRepository;
 import com.pdz.cartaocredito.service.validations.ValidaCartaoCredito;
 import com.pdz.cartaocredito.service.validations.ValidaUsuario;
 
@@ -36,6 +38,9 @@ public class CompraService {
 	private MaquinaCartaoCreditoRepository maqRepository;
 	
 	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
 	private EmailService emailService;
 	
 	public Compra salvarCompras(CompraDTO compra) throws Exception {
@@ -47,9 +52,26 @@ public class CompraService {
 		
 		atualizaLimiteDisponivel(compra);
 		
-		emailService.sendOrderConfirmationEmail(comprasObj);
+		Usuario usuObj = usuarioRepository.findById(comprasObj.getUsuario().getIdUsuario()).get();
 		
-		return compraRepository.save(comprasObj);
+		comprasObj.setUsuario(usuObj);
+		System.out.println("###################"+comprasObj.getUsuario().getEmail());
+		
+		compraRepository.save(comprasObj);
+		
+		try {
+			EnviarEmail(comprasObj);
+		} catch (Exception e) {
+			throw new DataIntegrityException("Email não enviado");
+		} 
+		
+		return comprasObj;
+	}
+	
+	public void EnviarEmail(Compra compraObj)throws Exception{
+		
+			emailService.sendOrderConfirmationEmail(compraObj);
+		System.out.println("######################Passou aki");
 	}
 	
 	public Compra fromDTO(CompraDTO obj) {
