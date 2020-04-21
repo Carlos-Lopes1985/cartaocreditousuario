@@ -55,6 +55,20 @@ public class Loja implements Serializable{
 	}
 	
 	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Loja [id=");
+		builder.append(getId());
+		builder.append(", nome=");
+		builder.append(getNome());
+		builder.append(", cnpj=");
+		builder.append(getCnpj());
+		builder.append("]");
+		return builder.toString();
+	}
+
+
 	public Loja(Integer id, String nome, String cnpj) {
 		super();
 		this.id = id;

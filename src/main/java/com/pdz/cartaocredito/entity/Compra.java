@@ -1,7 +1,9 @@
 package com.pdz.cartaocredito.entity;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.Locale;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -59,11 +61,32 @@ public class Compra implements Serializable {
 		this.cartaoCredito = cartaoCredito;
 	}
 
+	
 	@Override
 	public String toString() {
-		return "Compra [id=" + id + ", dataCompra=" + dataCompra + ", status=" + status + ", valor=" + valor + ", loja="
-				+ loja + ", qtdeParcela=" + qtdeParcela + ", usuario=" + usuario + ", cartaoCredito=" + cartaoCredito
-				+ "]";
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("Compra [id=");
+		builder.append(getId());
+		builder.append(", dataCompra=");
+		builder.append(getDataCompra());
+		builder.append(", status=");
+		builder.append(getStatus());
+		builder.append(", valor=");
+		builder.append(nf.format(getValor()));
+		builder.append(", qtdeParcela=");
+		builder.append(getQtdeParcela());
+		builder.append("\n");
+		builder.append(", loja=");
+		builder.append(getLoja());
+		builder.append("\n");
+		builder.append(", usuario=");
+		builder.append(getUsuario());
+		builder.append("\n");
+		builder.append("]");
+		
+		return builder.toString();
 	}
 
 	public Integer getId() {

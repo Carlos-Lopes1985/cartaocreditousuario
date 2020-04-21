@@ -11,9 +11,12 @@ import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
 import com.pdz.cartaocredito.entity.Usuario;
 import com.pdz.cartaocredito.entity.dto.CompraDTO;
+import com.pdz.cartaocredito.exception.DataIntegrityException;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CompraRepository;
 import com.pdz.cartaocredito.repository.MaquinaCartaoCreditoRepository;
+import com.pdz.cartaocredito.repository.UsuarioRepository;
+import com.pdz.cartaocredito.service.email.EmailService;
 import com.pdz.cartaocredito.service.validations.ValidaCartaoCredito;
 import com.pdz.cartaocredito.service.validations.ValidaUsuario;
 
@@ -35,18 +38,63 @@ public class CompraService {
 	@Autowired
 	private MaquinaCartaoCreditoRepository maqRepository;
 	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private EmailService emailService;
+	
+	/**
+	 * Responsável por salvar uma compra realizada 
+	 * 
+	 * @param compra
+	 * @return
+	 * @throws Exception
+	 */
 	public Compra salvarCompras(CompraDTO compra) throws Exception {
 		
 		Compra comprasObj = fromDTO(compra);
+		
+		Usuario usuObj = usuarioRepository.findById(comprasObj.getUsuario().getIdUsuario()).get();
+		
+		comprasObj.setUsuario(usuObj);
 		
 		validaCompra.verificaInformacoesCartao(comprasObj);
 		validaUsuario.verificaSenhaUsuario(comprasObj.getUsuario());
 		
 		atualizaLimiteDisponivel(compra);
 		
-		return compraRepository.save(comprasObj);
+		compraRepository.save(comprasObj);
+		
+		try {
+			
+			enviarEmail(comprasObj);
+		
+		} catch (Exception e) {
+			
+			throw new DataIntegrityException("Email não enviado");
+		
+		} 
+		return comprasObj;
 	}
 	
+	/**
+	 * Responsável pelo envio de email
+	 * 
+	 * @param compraObj
+	 * @throws Exception
+	 */
+	public void enviarEmail(Compra compraObj) throws Exception {
+
+		emailService.sendOrderConfirmationHtmlEmail(compraObj);
+	}
+	
+	/**
+	 * Converte um obj CompraDTO em um objeto Compra
+	 * 
+	 * @param obj
+	 * @return
+	 */
 	public Compra fromDTO(CompraDTO obj) {
 
 		Compra            compra = new Compra();
@@ -71,6 +119,12 @@ public class CompraService {
 		return compra;
 	}
 	
+	/**
+	 * Atualiza o limite do cartão de crédito
+	 * 
+	 * @param compra
+	 * @throws Exception
+	 */
 	public void atualizaLimiteDisponivel(CompraDTO compra)throws Exception{
 		
 		CartaoCredito cartao = cartaoCreditoService.buscaCartaoPorNumero(compra.getNumeroCartao());
@@ -82,11 +136,22 @@ public class CompraService {
 		cartaoCreditoService.salvar(cartao);
 		
 	}
-
+	
+	/**
+	 * Busca todas as compras realizadas
+	 * 
+	 * @return
+	 */
 	public List<Compra> buscarTodos() {
 		return compraRepository.findAll();
 	}
 
+	/**
+	 * Busca uma compra a partir do id passado como parametro
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public Compra buscarCompra(Integer id) {
 		
 		Compra compra = new Compra();
