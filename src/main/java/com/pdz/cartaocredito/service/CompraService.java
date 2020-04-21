@@ -44,6 +44,8 @@ public class CompraService {
 		
 		atualizaLimiteDisponivel(compra);
 		
+		System.out.println(comprasObj);
+		
 		return compraRepository.save(comprasObj);
 	}
 	
