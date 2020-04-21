@@ -1,4 +1,4 @@
-package com.pdz.cartaocredito.service;
+package com.pdz.cartaocredito.service.email;
 
 import javax.mail.internet.MimeMessage;
 

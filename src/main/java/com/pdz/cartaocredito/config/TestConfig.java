@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.pdz.cartaocredito.service.DBService;
-import com.pdz.cartaocredito.service.EmailService;
-import com.pdz.cartaocredito.service.SmtpEmailService;
+import com.pdz.cartaocredito.service.email.EmailService;
+import com.pdz.cartaocredito.service.email.SmtpEmailService;
 
 @Configuration
 @Profile("test")

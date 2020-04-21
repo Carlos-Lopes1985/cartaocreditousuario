@@ -1,4 +1,4 @@
-package com.pdz.cartaocredito.service;
+package com.pdz.cartaocredito.service.email;
 
 import java.util.Date;
 
@@ -44,13 +44,22 @@ public abstract class AbstractEmailService implements EmailService {
 		return sm;
 	}
 
-	protected String htmlFromTemplateCompra(Compra compra) {
+	protected String htmlFromTemplateCompraConfirmada(Compra compra) {
 		
 		Context context = new Context();
 		
 		context.setVariable("compra", compra);
 		
 		return templateEngine.process("email/confirmacaoCompra", context);
+	}
+	
+	protected String htmlFromTemplateCompraNegada(Compra compra) {
+		
+		Context context = new Context();
+		
+		context.setVariable("compra", compra);
+		
+		return templateEngine.process("email/compraNegada", context);
 	}
 	
 	@Override
@@ -64,7 +73,17 @@ public abstract class AbstractEmailService implements EmailService {
 		}
 	}
 
-
+	@Override
+	public void sendOrderCompraNegadaHtmlEmail(Compra compra) {
+		
+		try {
+			MimeMessage mm = prepareMimeMessageFromCompraNegada(compra);
+			sendHtmlEmail(mm);
+		} catch (Exception e) {
+			sendOrderConfirmationEmail(compra);
+		}
+	}
+	
 	protected MimeMessage prepareMimeMessageFromCompra(Compra compra) throws MessagingException {
 		
 		MimeMessage mm = javaMailSender.createMimeMessage();
@@ -75,7 +94,22 @@ public abstract class AbstractEmailService implements EmailService {
 		mmh.setFrom(sender);
 		mmh.setSubject("Compra confirmada! COD: " +compra.getId());
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
-		mmh.setText(htmlFromTemplateCompra(compra),true);
+		mmh.setText(htmlFromTemplateCompraConfirmada(compra),true);
+		
+		return mm;
+	}
+	
+	protected MimeMessage prepareMimeMessageFromCompraNegada(Compra compra) throws MessagingException {
+		
+		MimeMessage mm = javaMailSender.createMimeMessage();
+		
+		MimeMessageHelper mmh = new MimeMessageHelper(mm, true);
+		
+		mmh.setTo(compra.getUsuario().getEmail());
+		mmh.setFrom(sender);
+		mmh.setSubject("Compra Negada! Limite indisponivel");
+		mmh.setSentDate(new Date(System.currentTimeMillis()));
+		mmh.setText(htmlFromTemplateCompraNegada(compra),true);
 		
 		return mm;
 	}
