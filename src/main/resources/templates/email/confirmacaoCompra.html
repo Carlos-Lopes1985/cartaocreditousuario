@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:remove="all">Order Confirmation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div>
+	
+		<h1>
+			Compra Efetuada com sucesso! 
+		</h1>
+		
+		<br>
+		<br>
+		
+		<h1>
+			Número Compra: <span th:text="${compra.id}"> </span>
+		</h1>
+	 	
+	 	<p>
+			Data Compra: <span
+				th:text="${compra.dataCompra}"></span>
+		</p>
+		
+		<p>
+			Nome: <span th:text="${compra.usuario.nome}"></span>
+		</p>
+	
+		<h3>Detalhes da compra:</h3>
+		
+		<p>
+			Valor total: <span
+				th:text="${#numbers.formatDecimal(compra.valor, 0,'POINT', 2, 'COMMA')}"></span>
+		</p>
+		
+		<p>
+			Número de Parcelas: <span
+				th:text="${compra.qtdeParcela}"></span>
+		</p>
+		
+		<p>
+			Limite disponivel para Compras: <span
+				th:text="${#numbers.formatDecimal(compra.cartaoCredito.limiteDisponivelAtual, 0,'POINT', 2, 'COMMA')}"></span>
+		</p>
+		</div>
+		 
+</body>
+</html>

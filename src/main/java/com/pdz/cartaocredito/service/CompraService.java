@@ -1,15 +1,24 @@
 package com.pdz.cartaocredito.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pdz.cartaocredito.entity.CartaoCredito;
 import com.pdz.cartaocredito.entity.Compra;
 import com.pdz.cartaocredito.entity.Loja;
+import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
 import com.pdz.cartaocredito.entity.Usuario;
 import com.pdz.cartaocredito.entity.dto.CompraDTO;
+import com.pdz.cartaocredito.exception.DataIntegrityException;
+import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CompraRepository;
+import com.pdz.cartaocredito.repository.MaquinaCartaoCreditoRepository;
+import com.pdz.cartaocredito.repository.UsuarioRepository;
+import com.pdz.cartaocredito.service.email.EmailService;
 import com.pdz.cartaocredito.service.validations.ValidaCartaoCredito;
+import com.pdz.cartaocredito.service.validations.ValidaUsuario;
 
 @Service
 public class CompraService {
@@ -24,25 +33,75 @@ public class CompraService {
 	private ValidaCartaoCredito validaCompra;
 	
 	@Autowired
-	private LojaService lojaService;
+	private ValidaUsuario validaUsuario;
 	
+	@Autowired
+	private MaquinaCartaoCreditoRepository maqRepository;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private EmailService emailService;
+	
+	/**
+	 * Responsável por salvar uma compra realizada 
+	 * 
+	 * @param compra
+	 * @return
+	 * @throws Exception
+	 */
 	public Compra salvarCompras(CompraDTO compra) throws Exception {
 		
-		Compra compras = fromDTO(compra);
+		Compra comprasObj = fromDTO(compra);
 		
-		validaCompra.verificaInformacoesCartao(compras);
+		Usuario usuObj = usuarioRepository.findById(comprasObj.getUsuario().getIdUsuario()).get();
+		
+		comprasObj.setUsuario(usuObj);
+		
+		validaCompra.verificaInformacoesCartao(comprasObj);
+		validaUsuario.verificaSenhaUsuario(comprasObj.getUsuario());
 		
 		atualizaLimiteDisponivel(compra);
 		
-		return compraRepository.save(compras);
+		compraRepository.save(comprasObj);
+		
+		try {
+			
+			enviarEmail(comprasObj);
+		
+		} catch (Exception e) {
+			
+			throw new DataIntegrityException("Email não enviado");
+		
+		} 
+		return comprasObj;
 	}
 	
+	/**
+	 * Responsável pelo envio de email
+	 * 
+	 * @param compraObj
+	 * @throws Exception
+	 */
+	public void enviarEmail(Compra compraObj) throws Exception {
+
+		emailService.sendOrderConfirmationHtmlEmail(compraObj);
+	}
+	
+	/**
+	 * Converte um obj CompraDTO em um objeto Compra
+	 * 
+	 * @param obj
+	 * @return
+	 */
 	public Compra fromDTO(CompraDTO obj) {
 
-		Compra        compra = new Compra();
-		CartaoCredito cartao = cartaoCreditoService.buscaCartaoPorNumero(obj.getNumeroCartao());
-		Usuario       usu    = new Usuario();
-		Loja          loja   = lojaService.buscarLoja(obj.getLoja());
+		Compra            compra = new Compra();
+		CartaoCredito     cartao = cartaoCreditoService.buscaCartaoPorNumero(obj.getNumeroCartao());
+		Usuario              usu = new Usuario();
+		MaquinaCartaoCredito maq = maqRepository.findBySerial(obj.getSerial());
+		Loja                loja = new Loja();
 		
 		compra.setDataCompra(obj.getDataCompra());
 		compra.setValor(obj.getValor());
@@ -51,14 +110,21 @@ public class CompraService {
 		cartao.setBandeira(cartao.getBandeira());
 		cartao.setId(cartao.getId());
 		usu.setIdUsuario(cartao.getUsuario().getIdUsuario());
+		usu.setSenha(obj.getSenha());
 		compra.setCartaoCredito(cartao);
 		compra.setUsuario(usu);
-		loja.setId(loja.getId());
+		loja.setId(maq.getLoja().getId());
 		compra.setLoja(loja);
 		
 		return compra;
 	}
 	
+	/**
+	 * Atualiza o limite do cartão de crédito
+	 * 
+	 * @param compra
+	 * @throws Exception
+	 */
 	public void atualizaLimiteDisponivel(CompraDTO compra)throws Exception{
 		
 		CartaoCredito cartao = cartaoCreditoService.buscaCartaoPorNumero(compra.getNumeroCartao());
@@ -69,6 +135,34 @@ public class CompraService {
 		
 		cartaoCreditoService.salvar(cartao);
 		
+	}
+	
+	/**
+	 * Busca todas as compras realizadas
+	 * 
+	 * @return
+	 */
+	public List<Compra> buscarTodos() {
+		return compraRepository.findAll();
+	}
+
+	/**
+	 * Busca uma compra a partir do id passado como parametro
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Compra buscarCompra(Integer id) {
+		
+		Compra compra = new Compra();
+		
+		try {
+			compra = compraRepository.findById(id).get();
+		} catch (Exception e) {
+			throw new ObjectNotFoundException("Compra não encontrada!");
+		}
+		
+		return compra;
 	}
 	
 }

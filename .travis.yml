@@ -6,9 +6,6 @@ jdk:
 
   - openjdk8
 
-## install:
-##- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-
 cache:
 
   directories:
@@ -18,3 +15,10 @@ cache:
     - '$HOME/.sonar/cache'
 
 dist: trusty
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+before_install:
+  - chmod +x mvnw
+  

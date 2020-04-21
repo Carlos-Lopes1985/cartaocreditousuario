@@ -1,11 +1,13 @@
 package com.pdz.cartaocredito.resource;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,39 +15,39 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.pdz.cartaocredito.entity.Compra;
-import com.pdz.cartaocredito.entity.dto.CompraDTO;
-import com.pdz.cartaocredito.service.CompraService;
+import com.pdz.cartaocredito.entity.Loja;
+import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
+import com.pdz.cartaocredito.service.LojaService;
 
 @RestController
-@RequestMapping(value="/compras")
-public class CompraResource {
+@RequestMapping(value="/lojas")
+public class LojaResource {
 	
 	@Autowired
-	private CompraService compraService;
+	private LojaService lojaService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Compra>> findAll()throws Exception{
+	public ResponseEntity<List<Loja>> findAll()throws Exception{
 		
-		return ResponseEntity.ok().body(compraService.buscarTodos());
+		return ResponseEntity.ok().body(lojaService.buscarTodos());
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Compra> findById(@PathVariable Integer id)throws Exception{
+	public ResponseEntity<Loja> findById(@PathVariable Integer id)throws Exception{
 		
-		return ResponseEntity.ok().body(compraService.buscarCompra(id));
+		return ResponseEntity.ok().body(lojaService.buscarLoja(id));
 	}
 	
-	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Compra>efetuarCompra(@RequestBody CompraDTO compra)throws Exception{
+	public ResponseEntity<Void> insert(@Valid @RequestBody LojaNovoDTO objDto){
 		
-		compra.setDataCompra(LocalDate.now()); 
-			
-		Compra compraObj = compraService.salvarCompras(compra);
+		Loja obj = lojaService.fromDto(objDto);
+		
+		obj = lojaService.salvar(obj);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(compraObj.getId()).toUri();
+				.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		
 		return ResponseEntity.created(uri).build();
 	}

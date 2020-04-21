@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.pdz.cartaocredito.service.DBService;
+import com.pdz.cartaocredito.service.email.EmailService;
+import com.pdz.cartaocredito.service.email.SmtpEmailService;
 
 @Configuration
 @Profile("test")
@@ -22,6 +24,11 @@ public class TestConfig {
 		dbService.instanciateTestDatabase();
 		
 		return true;
+	}
+	
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }
 
