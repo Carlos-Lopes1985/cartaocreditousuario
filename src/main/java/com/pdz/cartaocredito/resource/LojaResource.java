@@ -1,5 +1,6 @@
 package com.pdz.cartaocredito.resource;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -18,6 +19,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
 import com.pdz.cartaocredito.service.LojaService;
+
+import jxl.read.biff.BiffException;
 
 @RestController
 @RequestMapping(value="/lojas")
@@ -38,6 +41,8 @@ public class LojaResource {
 		return ResponseEntity.ok().body(lojaService.buscarLoja(id));
 	}
 	
+	
+	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody LojaNovoDTO objDto){
@@ -50,5 +55,13 @@ public class LojaResource {
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(value="/importar",method = RequestMethod.POST)
+	public ResponseEntity<String> importArquivoExcelParaBanco() throws BiffException, IOException{
+		
+		lojaService.importExcelParaBanco();
+		
+		return ResponseEntity.ok().body("Importado com sucesso!");
 	}
 }
