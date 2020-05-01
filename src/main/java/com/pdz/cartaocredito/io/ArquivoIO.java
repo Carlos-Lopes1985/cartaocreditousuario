@@ -29,9 +29,16 @@ public class ArquivoIO {
 	}
 	// Remainder of class definition . . .
 	
-	public  List<LojaNovoDTO> importaExcel() throws IOException, BiffException {
+	public  List<LojaNovoDTO> importaExcel(String caminho) throws IOException, BiffException {
 		
-		Workbook      workbook = Workbook.getWorkbook(new File("lojaimport.xls"));
+		Workbook workbook = null;  
+		
+		try {
+			workbook = Workbook.getWorkbook(new File(caminho));
+		} catch (IOException e) {
+			throw new IOException("Caminho de arquivo inválido!");
+		}
+	
 		List<LojaNovoDTO>lojas = new ArrayList<LojaNovoDTO>();
 		LojaNovoDTO      loja;
 		

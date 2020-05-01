@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.pdz.cartaocredito.entity.Loja;
+import com.pdz.cartaocredito.entity.dto.ArquivoDTO;
 import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
+import com.pdz.cartaocredito.entity.dto.ResponsavelSalvarArquivoDTO;
 import com.pdz.cartaocredito.service.LojaService;
 
 import jxl.read.biff.BiffException;
@@ -29,6 +31,7 @@ public class LojaResource {
 	@Autowired
 	private LojaService lojaService;
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Loja>> findAll()throws Exception{
 		
@@ -40,8 +43,6 @@ public class LojaResource {
 		
 		return ResponseEntity.ok().body(lojaService.buscarLoja(id));
 	}
-	
-	
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
@@ -58,10 +59,11 @@ public class LojaResource {
 	}
 	
 	@RequestMapping(value="/importar",method = RequestMethod.POST)
-	public ResponseEntity<String> importArquivoExcelParaBanco() throws BiffException, IOException{
+	public ResponseEntity<ResponsavelSalvarArquivoDTO> importArquivoExcelParaBanco(@Valid @RequestBody ArquivoDTO arquivo) 
+			throws BiffException,IOException{
+	
+		ResponsavelSalvarArquivoDTO resp = lojaService.importExcelParaBanco(arquivo.getCaminho());
 		
-		lojaService.importExcelParaBanco();
-		
-		return ResponseEntity.ok().body("Importado com sucesso!");
+		return ResponseEntity.ok().body(resp);
 	}
 }

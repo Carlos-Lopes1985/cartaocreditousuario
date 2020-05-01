@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	private static final String[] PUBLIC_MATCHERS_GET = { 
 			"/cartaocredito/**",
 			"/compras/**",
-			"/lojas/**"
+		//	"/lojas/**"
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_POST = {
@@ -92,5 +92,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
-	
 }
