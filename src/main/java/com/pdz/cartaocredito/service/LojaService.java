@@ -1,6 +1,7 @@
 package com.pdz.cartaocredito.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pdz.cartaocredito.dao.LojaDAO;
 import com.pdz.cartaocredito.entity.Loja;
+import com.pdz.cartaocredito.entity.dto.CompraExportaResponseDTO;
 import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
 import com.pdz.cartaocredito.entity.dto.ResponsavelSalvarArquivoDTO;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
@@ -25,7 +28,6 @@ public class LojaService {
 	
 	@Autowired
 	private LojaRepository lojaRepository;
-	public ResponsavelSalvarArquivoDTO arquivoDTO;
 	
 	/**
 	 * Busca todas as lojas cadastradas no sistema
@@ -195,5 +197,23 @@ public class LojaService {
 		resp.setRegistrosNaoImportados(cnpjNaoImportados);
 		
 		return lojas;
+	}
+	
+	public void buscarLojasPorCnpjData(String cnpj)throws ObjectNotFoundException{
+		
+	//	Loja loja = lojaRepository.findByCnpj(cnpj);
+		
+		List<Loja> lojas = new ArrayList<Loja>();
+		
+		LojaDAO lj = new LojaDAO();
+		
+		lojas = lj.listar();
+		
+		for (int i = 0; i < lojas.size(); i++) {
+			System.out.println("##########NOME LOJA######"+lojas.get(i).getNome());
+		}
+	//	System.out.println(loja.toString());
+		
+		//return null;
 	}
 }

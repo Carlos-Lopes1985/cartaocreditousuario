@@ -18,6 +18,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Usuario implements Serializable{
 
@@ -43,6 +45,7 @@ public class Usuario implements Serializable{
 	@OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
 	private Set<CartaoCredito>cartoes = new HashSet<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
 	private List<Compra>compras = new ArrayList<Compra>();
 
@@ -63,7 +66,7 @@ public class Usuario implements Serializable{
 	@Override
 	public String toString() {
 		return "Usuario [idUsuario=" + idUsuario + ", nome=" + nome + ", dataNascimento=" + dataNascimento + ", cpf="
-				+ cpf + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ cpf + ", getClass()=" + getClass() + "Senha="+ senha + ", toString()=" + super.toString()
 				+ "]";
 	}
 

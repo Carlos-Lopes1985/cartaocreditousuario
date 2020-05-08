@@ -30,8 +30,9 @@ public class Compra implements Serializable {
 	private Double valor;
 	private Integer qtdeParcela;
 	
+	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "id_loja")
+	@JoinColumn(name = "id_loja", referencedColumnName = "id")
 	private Loja loja;
 	
 	@JsonIgnore
@@ -39,7 +40,6 @@ public class Compra implements Serializable {
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "cartao_id")
 	private CartaoCredito cartaoCredito;

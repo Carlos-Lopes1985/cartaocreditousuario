@@ -38,9 +38,8 @@ public class Loja implements Serializable{
 	@Column(unique=true)
 	private String cnpj;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "loja")
-	private List<Compra> compra = new ArrayList<Compra>();
+	private List<Compra> compra;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "loja")
@@ -101,7 +100,6 @@ public class Loja implements Serializable{
 		this.nome = nome;
 	}
 
-	@JsonIgnore
 	public List<Compra> getCompras() {
 		return compra;
 	}

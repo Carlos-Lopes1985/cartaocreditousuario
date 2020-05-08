@@ -39,6 +39,7 @@ public class CartaoCredito implements Serializable {
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "cartaoCredito")
 	private List<Compra> compra;
 	

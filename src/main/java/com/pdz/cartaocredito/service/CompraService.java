@@ -1,16 +1,21 @@
 package com.pdz.cartaocredito.service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pdz.cartaocredito.dao.LojaDAO;
 import com.pdz.cartaocredito.entity.CartaoCredito;
 import com.pdz.cartaocredito.entity.Compra;
 import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
 import com.pdz.cartaocredito.entity.Usuario;
 import com.pdz.cartaocredito.entity.dto.CompraDTO;
+import com.pdz.cartaocredito.entity.dto.CompraExportarDTO;
 import com.pdz.cartaocredito.exception.DataIntegrityException;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CompraRepository;
@@ -39,9 +44,6 @@ public class CompraService {
 	private MaquinaCartaoCreditoRepository maqRepository;
 	
 	@Autowired
-	private UsuarioRepository usuarioRepository;
-	
-	@Autowired
 	private EmailService emailService;
 	
 	/**
@@ -53,11 +55,7 @@ public class CompraService {
 	 */
 	public Compra salvarCompras(CompraDTO compra) throws Exception {
 		
-		Compra comprasObj = fromDTO(compra);
-		
-		Usuario usuObj = usuarioRepository.findById(comprasObj.getUsuario().getIdUsuario()).get();
-		
-		comprasObj.setUsuario(usuObj);
+		Compra comprasObj = fromDTO(compra); 
 		
 		validaCompra.verificaInformacoesCartao(comprasObj);
 		validaUsuario.verificaSenhaUsuario(comprasObj.getUsuario());
@@ -66,14 +64,10 @@ public class CompraService {
 		
 		compraRepository.save(comprasObj);
 		
-		try {
-			
+		try{
 			enviarEmail(comprasObj);
-		
 		} catch (Exception e) {
-			
 			throw new DataIntegrityException("Email não enviado");
-		
 		} 
 		return comprasObj;
 	}
@@ -112,9 +106,12 @@ public class CompraService {
 		usu.setIdUsuario(cartao.getUsuario().getIdUsuario());
 		usu.setSenha(obj.getSenha());
 		compra.setCartaoCredito(cartao);
+		usu.setEmail(cartao.getUsuario().getEmail());
 		compra.setUsuario(usu);
 		loja.setId(maq.getLoja().getId());
 		compra.setLoja(loja);
+		
+		System.out.println("SENHA FROM DTO: "+obj.getSenha());
 		
 		return compra;
 	}
@@ -161,8 +158,20 @@ public class CompraService {
 		} catch (Exception e) {
 			throw new ObjectNotFoundException("Compra não encontrada!");
 		}
-		
 		return compra;
 	}
-	
+
+	/**
+	 * 
+	 * @param compra
+	 */
+	public void exportaExcelCompras(@Valid CompraExportarDTO compra) {
+		LojaDAO lj = new LojaDAO();
+		List<Loja> lojas = new ArrayList<Loja>();
+		lj.listar();
+		for (int i = 0; i < lojas.size(); i++) {
+			System.out.println("##########NOME LOJA######"+lojas.get(i).getNome());
+		}
+		lj.buscaComprasLojasUsuarios();
+	}
 }

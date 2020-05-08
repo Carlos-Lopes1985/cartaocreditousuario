@@ -17,6 +17,12 @@ public class ValidaUsuario {
 	@Autowired
 	private BCryptPasswordEncoder pe;
 	
+	/**
+	 * 
+	 * @param usuario
+	 * @return
+	 * @throws Exception
+	 */
 	public Boolean verificaSenhaUsuario(Usuario usuario) throws Exception {
 		
 		Usuario user = usuarioRepository.findById(usuario.getIdUsuario()).get();
@@ -24,7 +30,6 @@ public class ValidaUsuario {
 		if(!pe.matches(usuario.getSenha(),user.getSenha())) {
 			
 			throw new MethodFailureException("Senha digitada é inválida");
-			
 		}
 		return true;
 	}

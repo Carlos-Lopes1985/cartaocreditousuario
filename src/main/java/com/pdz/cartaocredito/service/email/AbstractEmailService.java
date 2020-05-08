@@ -105,6 +105,8 @@ public abstract class AbstractEmailService implements EmailService {
 		
 		MimeMessageHelper mmh = new MimeMessageHelper(mm, true);
 		
+		System.out.println("###############EMAIL: " +compra.getUsuario().getEmail());
+		
 		mmh.setTo(compra.getUsuario().getEmail());
 		mmh.setFrom(sender);
 		mmh.setSubject("Compra Negada! Limite indisponivel");
