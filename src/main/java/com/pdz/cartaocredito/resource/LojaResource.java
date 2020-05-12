@@ -31,7 +31,7 @@ public class LojaResource {
 	@Autowired
 	private LojaService lojaService;
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Loja>> findAll()throws Exception{
 		
@@ -44,7 +44,7 @@ public class LojaResource {
 		return ResponseEntity.ok().body(lojaService.buscarLoja(id));
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody LojaNovoDTO objDto){
 		

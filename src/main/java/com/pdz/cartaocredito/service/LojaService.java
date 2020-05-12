@@ -46,11 +46,14 @@ public class LojaService {
 	 */
 	public Loja buscarLoja(Integer id) {
 		
-		Loja lojaObj = lojaRepository.findById(id).get();
+		Loja lojaObj;
 		
-		if(lojaObj == null) {
+		try {
+			lojaObj = lojaRepository.findById(id).get();
+		} catch (ObjectNotFoundException e) {
 			throw new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +Loja.class);
 		}
+		
 		return lojaObj;
 	}
 	

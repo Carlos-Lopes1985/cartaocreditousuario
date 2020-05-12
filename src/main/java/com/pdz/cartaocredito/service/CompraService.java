@@ -20,7 +20,6 @@ import com.pdz.cartaocredito.exception.DataIntegrityException;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CompraRepository;
 import com.pdz.cartaocredito.repository.MaquinaCartaoCreditoRepository;
-import com.pdz.cartaocredito.repository.UsuarioRepository;
 import com.pdz.cartaocredito.service.email.EmailService;
 import com.pdz.cartaocredito.service.validations.ValidaCartaoCredito;
 import com.pdz.cartaocredito.service.validations.ValidaUsuario;
@@ -90,7 +89,9 @@ public class CompraService {
 	 * @return
 	 */
 	public Compra fromDTO(CompraDTO obj) {
-
+		
+		System.out.println("Passou aki##################################"+obj.toString());
+		
 		Compra            compra = new Compra();
 		CartaoCredito     cartao = cartaoCreditoService.buscaCartaoPorNumero(obj.getNumeroCartao());
 		Usuario              usu = new Usuario();

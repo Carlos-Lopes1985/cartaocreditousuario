@@ -3,10 +3,11 @@ package com.pdz.cartaocredito.entity.dto;
 import java.time.LocalDate;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class CompraDTO {
 	
-	@NotBlank(message="Preenchimento data compra obrigatório")
+	@NotNull(message="Preenchimento data compra obrigatório")
 	private LocalDate dataCompra;
 	@NotBlank(message="Preenchimento valor obrigatório")
 	private Double valor;

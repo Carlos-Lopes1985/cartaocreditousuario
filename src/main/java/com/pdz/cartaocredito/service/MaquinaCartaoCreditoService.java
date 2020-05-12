@@ -36,7 +36,7 @@ public class MaquinaCartaoCreditoService {
 			throw new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +MaquinaCartaoCredito.class);
 		}
 		
-		return null;
+		return maq;
 	}
 
 }

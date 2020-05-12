@@ -48,7 +48,7 @@ public class CartaoCredito implements Serializable {
 	}
 
 	public CartaoCredito(Integer id, String bandeira, String numeroCartao, String codSeguranca,
-			Double limiteDisponivelTotal, Double limiteDisponivelAtual, Double limiteDisponivelParaSaque,LocalDate dataValidade,
+			Double limiteDisponivelTotal, Double limiteDisponivelAtual, Double limiteDisponivelParaSaque,LocalDate dataValidade,LocalDate vencimentoFatura,
 			Usuario usuario) {
 		super();
 		this.id = id;
@@ -59,6 +59,7 @@ public class CartaoCredito implements Serializable {
 		this.limiteDisponivelAtual = limiteDisponivelAtual;
 		this.limiteDisponivelParaSaque = limiteDisponivelParaSaque;
 		this.dataValidade = dataValidade;
+		this.vencimentoFatura = vencimentoFatura;
 		this.usuario = usuario;
 	}
 

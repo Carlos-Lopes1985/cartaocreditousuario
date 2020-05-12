@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.pdz.cartaocredito.entity.CartaoCredito;
 import com.pdz.cartaocredito.entity.Usuario;
 import com.pdz.cartaocredito.entity.dto.UsuarioDTO;
+import com.pdz.cartaocredito.exception.DataIntegrityException;
 import com.pdz.cartaocredito.repository.CartaoCreditoRepository;
 import com.pdz.cartaocredito.repository.UsuarioRepository;
 
@@ -32,11 +33,12 @@ public class UsuarioService {
 	public Usuario salvar(Usuario usu) throws Exception {
 		
 		try {
+			
 			usuarioRepository.save(usu);
 			
 			cartaoCreditoRepository.saveAll(usu.getCartoes());
-		} catch (Exception e) {
-			throw new Exception();
+		} catch (DataIntegrityException e) {
+			throw new DataIntegrityException("Erro no cadastro do usuário");
 		}
 		return usu;
 	}
@@ -59,7 +61,7 @@ public class UsuarioService {
 		
 		CartaoCredito cartao = 
 				new CartaoCredito(null, objDto.getBandeira(), objDto.getNumeroCartao(), objDto.getCodSeguranca(), 
-				objDto.getLimiteDisponivelAtual(), objDto.getLimiteDisponivelTotal(), objDto.getLimiteDisponivelParaSaque(), LocalDate.now(), usu);
+				objDto.getLimiteDisponivelAtual(), objDto.getLimiteDisponivelTotal(), objDto.getLimiteDisponivelParaSaque(), LocalDate.now(),objDto.getVencimentoFatura(), usu);
 
 		Set<CartaoCredito>cartoes = new HashSet<>();
 		cartoes.add(cartao);
