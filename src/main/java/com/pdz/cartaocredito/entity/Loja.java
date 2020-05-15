@@ -53,7 +53,6 @@ public class Loja implements Serializable{
 		addPerfil(Perfil.CLIENTE);
 	}
 	
-	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
