@@ -1,6 +1,6 @@
 package com.pdz.cartaocredito.service;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,10 +9,10 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pdz.cartaocredito.dao.LojaDAO;
 import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
 import com.pdz.cartaocredito.entity.dto.ResponsavelSalvarArquivoDTO;
+import com.pdz.cartaocredito.exception.IOReaderException;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.io.ArquivoIO;
 import com.pdz.cartaocredito.repository.LojaRepository;
@@ -77,9 +77,10 @@ public class LojaService {
 	 * 
 	 * @return
 	 * @throws BiffException
-	 * @throws IOException
+	 * @throws IOReaderException
+	 * @throws java.io.IOException 
 	 */
-	public ResponsavelSalvarArquivoDTO importExcelParaBanco(String caminho) throws BiffException, IOException {
+	public ResponsavelSalvarArquivoDTO importExcelParaBanco(String caminho) throws BiffException,IOReaderException {
 		
 		List<LojaNovoDTO> lojas          = new ArrayList<LojaNovoDTO>();
 		List<LojaNovoDTO> lojasAux       = new ArrayList<LojaNovoDTO>();
@@ -131,7 +132,7 @@ public class LojaService {
 	 */
 	public void salvaListaLojas(List<LojaNovoDTO>lojas) {
 		
-		Loja lj = new Loja(); //porque instancia?
+		Loja lj; 
 		
 		for (int i = 0; i < lojas.size(); i++) {
 			
@@ -191,21 +192,5 @@ public class LojaService {
 		resp.setRegistrosNaoImportados(cnpjNaoImportados);
 		
 		return lojas;
-	}
-	
-	public void buscarLojasPorCnpjData(String cnpj)throws ObjectNotFoundException{
-		
-	//	Loja loja = lojaRepository.findByCnpj(cnpj);
-		
-		List<Loja> lojas = new ArrayList<Loja>();
-		
-		LojaDAO lj = new LojaDAO();
-		
-		lojas = lj.listar();
-		
-		for (int i = 0; i < lojas.size(); i++) {
-			System.out.println("##########NOME LOJA######"+lojas.get(i).getNome());
-		}
-	
 	}
 }

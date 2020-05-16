@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
+import com.pdz.cartaocredito.exception.IOReaderException;
 
 import jxl.Cell;
 import jxl.Sheet;
@@ -29,14 +30,14 @@ public class ArquivoIO {
 	}
 	// Remainder of class definition . . .
 	
-	public  List<LojaNovoDTO> importaExcel(String caminho) throws IOException, BiffException {
+	public  List<LojaNovoDTO> importaExcel(String caminho) throws IOReaderException, BiffException {
 		
 		Workbook workbook = null;  
 		
 		try {
 			workbook = Workbook.getWorkbook(new File(caminho));
-		} catch (IOException e) {
-			throw new IOException("Caminho de arquivo inválido!");
+		} catch (IOException e){
+			throw new IOReaderException("Caminho de arquivo inválido!");
 		}
 	
 		List<LojaNovoDTO>lojas = new ArrayList<LojaNovoDTO>();
