@@ -14,33 +14,34 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.pdz.cartaocredito.entity.Usuario;
-import com.pdz.cartaocredito.entity.dto.UsuarioDTO;
+import com.pdz.cartaocredito.entity.Cliente;
+import com.pdz.cartaocredito.entity.Pessoa;
+import com.pdz.cartaocredito.entity.dto.ClienteDTO;
 import com.pdz.cartaocredito.service.UsuarioService;
 
 @RestController
-@RequestMapping(value="/usuarios")
-public class UsuarioResource {
+@RequestMapping(value="/pessoas")
+public class PessoaResource {
 
 	@Autowired
 	private UsuarioService usuarioService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Usuario>> findAll()throws Exception{
+	public ResponseEntity<List<Pessoa>> findAll()throws Exception{
 		
 		return ResponseEntity.ok().body(usuarioService.buscarTodos());
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Usuario> findById(@PathVariable Integer id)throws Exception{
+	public ResponseEntity<Pessoa> findById(@PathVariable Integer id)throws Exception{
 		
 		return ResponseEntity.ok().body(usuarioService.buscarUsuario(id));
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioDTO objDto) throws Exception{
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO objDto) throws Exception{
 		
-		Usuario obj = usuarioService.fromDto(objDto);
+		Cliente obj = usuarioService.fromDto(objDto);
 		
 		obj = usuarioService.salvar(obj);
 		

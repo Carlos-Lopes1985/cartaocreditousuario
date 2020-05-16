@@ -8,4 +8,6 @@ import com.pdz.cartaocredito.entity.Loja;
 @Repository
 public interface LojaRepository extends JpaRepository<Loja, Integer> {
 
+	Loja findByCnpj(String cnpj);
+	
 }

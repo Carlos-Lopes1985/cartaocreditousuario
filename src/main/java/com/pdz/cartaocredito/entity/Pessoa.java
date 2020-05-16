@@ -2,12 +2,10 @@ package com.pdz.cartaocredito.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -16,10 +14,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.pdz.cartaocredito.enums.Perfil;
 
 @Entity
-public class Usuario implements Serializable{
+@Inheritance(strategy=InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type") //mapeamento com herança, cria umatabela para cada entidade
+public abstract class Pessoa implements Serializable{
 
 	/**
 	 * 
@@ -40,17 +44,15 @@ public class Usuario implements Serializable{
 	@CollectionTable(name="TELEFONES")
 	private Set<String> telefones = new HashSet<>();
 	
-	@OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
-	private Set<CartaoCredito>cartoes = new HashSet<>();
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name="PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
 	
-	@OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
-	private List<Compra>compras = new ArrayList<Compra>();
-
-	public Usuario() {
+	public Pessoa() {
 		super();
 	}
 
-	public Usuario(Integer idUsuario, String nome, LocalDate dataNascimento, String cpf, String senha, String email) {
+	public Pessoa(Integer idUsuario, String nome, LocalDate dataNascimento, String cpf, String senha, String email) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nome = nome;
@@ -63,7 +65,7 @@ public class Usuario implements Serializable{
 	@Override
 	public String toString() {
 		return "Usuario [idUsuario=" + idUsuario + ", nome=" + nome + ", dataNascimento=" + dataNascimento + ", cpf="
-				+ cpf + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ cpf + ", getClass()=" + getClass() + "Senha="+ senha + ", toString()=" + super.toString()
 				+ "]";
 	}
 
@@ -107,22 +109,6 @@ public class Usuario implements Serializable{
 		this.senha = senha;
 	}
 
-	public Set<CartaoCredito> getCartoes() {
-		return cartoes;
-	}
-
-	public void setCartoes(Set<CartaoCredito> cartoes) {
-		this.cartoes = cartoes;
-	}
-
-	public List<Compra> getCompras() {
-		return compras;
-	}
-
-	public void setCompras(List<Compra> compras) {
-		this.compras = compras;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -137,5 +123,15 @@ public class Usuario implements Serializable{
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+	
+	//responsável por retornar todos os perfils do usuário
+	public Set<Perfil> getPerfils(){
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+		
+	}
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
 	}
 }

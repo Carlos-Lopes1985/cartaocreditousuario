@@ -36,12 +36,11 @@ public class CompraResource {
 		return ResponseEntity.ok().body(compraService.buscarCompra(id));
 	}
 	
-	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Compra>efetuarCompra(@RequestBody CompraDTO compra)throws Exception{
 		
 		compra.setDataCompra(LocalDate.now()); 
-			
+		
 		Compra compraObj = compraService.salvarCompras(compra);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()

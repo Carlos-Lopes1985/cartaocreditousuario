@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pdz.cartaocredito.entity.CartaoCredito;
+import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CartaoCreditoRepository;
 
 @Service
@@ -17,6 +18,10 @@ public class CartaoCreditoService {
 	public CartaoCredito buscaCartaoPorNumero(String numero) {
 		
 		CartaoCredito  cc = cartaoCreditoRepository.findByNumeroCartao(numero);
+		
+		if(cc==null) {
+			throw new ObjectNotFoundException("Cartão de Crédito não encontrado! Id: " +numero+ "numero: " +CartaoCredito.class);
+		}
 		
 		return cc;
 	}

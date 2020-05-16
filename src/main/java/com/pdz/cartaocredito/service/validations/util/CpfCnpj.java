@@ -44,4 +44,13 @@ public class CpfCnpj {
         final Integer digit2 = calculate(tin.substring(0, 12) + digit1, weightTin);
         return tin.equals(tin.substring(0, 12) + digit1.toString() + digit2.toString());
     }
+    
+    /**
+	 * 
+	 * @param cnpj
+	 * @return
+	 */
+	public static String removeMascaraCnpj(String cnpj) {
+		return cnpj.replace(".", "").replace("/", "").replace("-", "");
+	}
 }

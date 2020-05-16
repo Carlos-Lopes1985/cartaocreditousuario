@@ -1,21 +1,25 @@
 package com.pdz.cartaocredito.service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pdz.cartaocredito.dao.LojaDAO;
 import com.pdz.cartaocredito.entity.CartaoCredito;
+import com.pdz.cartaocredito.entity.Cliente;
 import com.pdz.cartaocredito.entity.Compra;
 import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
-import com.pdz.cartaocredito.entity.Usuario;
 import com.pdz.cartaocredito.entity.dto.CompraDTO;
+import com.pdz.cartaocredito.entity.dto.CompraExportarDTO;
 import com.pdz.cartaocredito.exception.DataIntegrityException;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CompraRepository;
 import com.pdz.cartaocredito.repository.MaquinaCartaoCreditoRepository;
-import com.pdz.cartaocredito.repository.UsuarioRepository;
 import com.pdz.cartaocredito.service.email.EmailService;
 import com.pdz.cartaocredito.service.validations.ValidaCartaoCredito;
 import com.pdz.cartaocredito.service.validations.ValidaUsuario;
@@ -39,9 +43,6 @@ public class CompraService {
 	private MaquinaCartaoCreditoRepository maqRepository;
 	
 	@Autowired
-	private UsuarioRepository usuarioRepository;
-	
-	@Autowired
 	private EmailService emailService;
 	
 	/**
@@ -53,27 +54,19 @@ public class CompraService {
 	 */
 	public Compra salvarCompras(CompraDTO compra) throws Exception {
 		
-		Compra comprasObj = fromDTO(compra);
-		
-		Usuario usuObj = usuarioRepository.findById(comprasObj.getUsuario().getIdUsuario()).get();
-		
-		comprasObj.setUsuario(usuObj);
+		Compra comprasObj = fromDTO(compra); 
 		
 		validaCompra.verificaInformacoesCartao(comprasObj);
-		validaUsuario.verificaSenhaUsuario(comprasObj.getUsuario());
+		validaUsuario.verificaSenhaUsuario(comprasObj.getCliente());
 		
 		atualizaLimiteDisponivel(compra);
 		
 		compraRepository.save(comprasObj);
 		
-		try {
-			
+		try{
 			enviarEmail(comprasObj);
-		
 		} catch (Exception e) {
-			
 			throw new DataIntegrityException("Email não enviado");
-		
 		} 
 		return comprasObj;
 	}
@@ -96,12 +89,18 @@ public class CompraService {
 	 * @return
 	 */
 	public Compra fromDTO(CompraDTO obj) {
-
+		
 		Compra            compra = new Compra();
 		CartaoCredito     cartao = cartaoCreditoService.buscaCartaoPorNumero(obj.getNumeroCartao());
-		Usuario              usu = new Usuario();
+		Cliente              usu = new Cliente();
+		
 		MaquinaCartaoCredito maq = maqRepository.findBySerial(obj.getSerial());
-		Loja                loja = new Loja();
+		
+		if(maq == null) {
+			throw new ObjectNotFoundException(" Maquina não encontrado! Id: " +obj.getSerial()+ "Tipo: " +MaquinaCartaoCredito.class);
+		}
+		
+		Loja loja = new Loja();
 		
 		compra.setDataCompra(obj.getDataCompra());
 		compra.setValor(obj.getValor());
@@ -109,10 +108,11 @@ public class CompraService {
 		cartao.setCodSeguranca(obj.getCodSeguranca());
 		cartao.setBandeira(cartao.getBandeira());
 		cartao.setId(cartao.getId());
-		usu.setIdUsuario(cartao.getUsuario().getIdUsuario());
+		usu.setIdUsuario(cartao.getCliente().getIdUsuario());
 		usu.setSenha(obj.getSenha());
 		compra.setCartaoCredito(cartao);
-		compra.setUsuario(usu);
+		usu.setEmail(cartao.getCliente().getEmail());
+		compra.setCliente(usu);
 		loja.setId(maq.getLoja().getId());
 		compra.setLoja(loja);
 		
@@ -161,8 +161,20 @@ public class CompraService {
 		} catch (Exception e) {
 			throw new ObjectNotFoundException("Compra não encontrada!");
 		}
-		
 		return compra;
 	}
-	
+
+	/**
+	 * 
+	 * @param compra
+	 */
+	public void exportaExcelCompras(@Valid CompraExportarDTO compra) {
+		LojaDAO lj = new LojaDAO();
+		List<Loja> lojas = new ArrayList<Loja>();
+		lj.listar();
+		for (int i = 0; i < lojas.size(); i++) {
+			System.out.println("##########NOME LOJA######"+lojas.get(i).getNome());
+		}
+		lj.buscaComprasLojasUsuarios();
+	}
 }
