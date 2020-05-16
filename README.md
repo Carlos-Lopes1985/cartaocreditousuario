@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/Carlos-Lopes1985/cartaocreditousuario.svg?token=rWDx79qT2YUj9trohyEC&branch=master)](https://travis-ci.com/github/Carlos-Lopes1985/cartaocreditousuario)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=br.com%3Acartaocredito&metric=alert_status)](https://sonarcloud.io/dashboard?id=br.com%3Acartaocredito) 
 
 Instruções 
 
