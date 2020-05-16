@@ -35,7 +35,7 @@ public abstract class AbstractEmailService implements EmailService {
 	protected SimpleMailMessage prepareSimpleMailMessage(Compra compra) {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
-		sm.setTo(compra.getUsuario().getEmail());	
+		sm.setTo(compra.getCliente().getEmail());	
 		sm.setFrom(sender);
 		sm.setSubject("Compra confirmada: Código: "+compra.getId());
 		sm.setSentDate(new Date(System.currentTimeMillis()));
@@ -90,7 +90,7 @@ public abstract class AbstractEmailService implements EmailService {
 		
 		MimeMessageHelper mmh = new MimeMessageHelper(mm, true);
 		
-		mmh.setTo(compra.getUsuario().getEmail());
+		mmh.setTo(compra.getCliente().getEmail());
 		mmh.setFrom(sender);
 		mmh.setSubject("Compra confirmada! COD: " +compra.getId());
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
@@ -105,9 +105,9 @@ public abstract class AbstractEmailService implements EmailService {
 		
 		MimeMessageHelper mmh = new MimeMessageHelper(mm, true);
 		
-		System.out.println("###############EMAIL: " +compra.getUsuario().getEmail());
+		System.out.println("###############EMAIL: " +compra.getCliente().getEmail());
 		
-		mmh.setTo(compra.getUsuario().getEmail());
+		mmh.setTo(compra.getCliente().getEmail());
 		mmh.setFrom(sender);
 		mmh.setSubject("Compra Negada! Limite indisponivel");
 		mmh.setSentDate(new Date(System.currentTimeMillis()));

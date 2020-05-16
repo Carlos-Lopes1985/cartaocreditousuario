@@ -23,7 +23,8 @@ public class Cliente extends Pessoa implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
 	private Set<CartaoCredito>cartoes = new HashSet<>();
 	

@@ -6,25 +6,25 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
-import com.pdz.cartaocredito.repository.MaquinaCartaoCreditoRepository;
+import com.pdz.cartaocredito.entity.Pessoa;
+import com.pdz.cartaocredito.repository.PessoaRepository;
 import com.pdz.cartaocredito.security.UserSS;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
 	
 	@Autowired
-	private MaquinaCartaoCreditoRepository maquinaCartaoCreditoRepository;
+	private PessoaRepository pessoaRepository;
 	
 	@Override
-	public UserDetails loadUserByUsername(String serial) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		
-		MaquinaCartaoCredito  maq = maquinaCartaoCreditoRepository.findBySerial(serial);
+		Pessoa  pes = pessoaRepository.findByEmail(email);
 		
-		if(maq == null) {
-			throw new UsernameNotFoundException(serial);
+		if(pes == null) {
+			throw new UsernameNotFoundException(email);
 		}
-		return new UserSS(maq.getId(), maq.getSerial(), maq.getSenha(), maq.getLoja().getPerfils());
+		return new UserSS(pes.getIdUsuario(), pes.getEmail(), pes.getSenha(), pes.getPerfils());
 	}
 
 }

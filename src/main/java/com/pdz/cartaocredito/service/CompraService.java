@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.pdz.cartaocredito.dao.LojaDAO;
 import com.pdz.cartaocredito.entity.CartaoCredito;
+import com.pdz.cartaocredito.entity.Cliente;
 import com.pdz.cartaocredito.entity.Compra;
 import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
-import com.pdz.cartaocredito.entity.Usuario;
 import com.pdz.cartaocredito.entity.dto.CompraDTO;
 import com.pdz.cartaocredito.entity.dto.CompraExportarDTO;
 import com.pdz.cartaocredito.exception.DataIntegrityException;
@@ -57,7 +57,7 @@ public class CompraService {
 		Compra comprasObj = fromDTO(compra); 
 		
 		validaCompra.verificaInformacoesCartao(comprasObj);
-		validaUsuario.verificaSenhaUsuario(comprasObj.getUsuario());
+		validaUsuario.verificaSenhaUsuario(comprasObj.getCliente());
 		
 		atualizaLimiteDisponivel(compra);
 		
@@ -90,13 +90,17 @@ public class CompraService {
 	 */
 	public Compra fromDTO(CompraDTO obj) {
 		
-		System.out.println("Passou aki##################################"+obj.toString());
-		
 		Compra            compra = new Compra();
 		CartaoCredito     cartao = cartaoCreditoService.buscaCartaoPorNumero(obj.getNumeroCartao());
-		Usuario              usu = new Usuario();
+		Cliente              usu = new Cliente();
+		
 		MaquinaCartaoCredito maq = maqRepository.findBySerial(obj.getSerial());
-		Loja                loja = new Loja();
+		
+		if(maq == null) {
+			throw new ObjectNotFoundException(" Maquina não encontrado! Id: " +obj.getSerial()+ "Tipo: " +MaquinaCartaoCredito.class);
+		}
+		
+		Loja loja = new Loja();
 		
 		compra.setDataCompra(obj.getDataCompra());
 		compra.setValor(obj.getValor());
@@ -104,15 +108,13 @@ public class CompraService {
 		cartao.setCodSeguranca(obj.getCodSeguranca());
 		cartao.setBandeira(cartao.getBandeira());
 		cartao.setId(cartao.getId());
-		usu.setIdUsuario(cartao.getUsuario().getIdUsuario());
+		usu.setIdUsuario(cartao.getCliente().getIdUsuario());
 		usu.setSenha(obj.getSenha());
 		compra.setCartaoCredito(cartao);
-		usu.setEmail(cartao.getUsuario().getEmail());
-		compra.setUsuario(usu);
+		usu.setEmail(cartao.getCliente().getEmail());
+		compra.setCliente(usu);
 		loja.setId(maq.getLoja().getId());
 		compra.setLoja(loja);
-		
-		System.out.println("SENHA FROM DTO: "+obj.getSenha());
 		
 		return compra;
 	}

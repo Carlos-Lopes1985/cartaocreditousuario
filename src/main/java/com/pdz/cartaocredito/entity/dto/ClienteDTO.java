@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
 @SuppressWarnings("deprecation")
-public class UsuarioDTO implements Serializable {
+public class ClienteDTO implements Serializable {
 	
 	/**
 	 * 
@@ -55,7 +55,11 @@ public class UsuarioDTO implements Serializable {
 	@NotNull(message="Preenchimento vencimento fatura obrigatório")
 	private LocalDate vencimentoFatura;
 	
-	public UsuarioDTO(Integer idUsuario, String nome, LocalDate dataNascimento, String cpf, String senha, String email,
+	public ClienteDTO() {
+		super();
+	}
+
+	public ClienteDTO(Integer idUsuario, String nome, LocalDate dataNascimento, String cpf, String senha, String email,
 			String bandeira, String numeroCartao, String codSeguranca, Double limiteDisponivelTotal,
 			Double limiteDisponivelAtual, Double limiteDisponivelParaSaque, LocalDate dataValidade,
 			LocalDate vencimentoFatura) {

@@ -1,7 +1,6 @@
 package com.pdz.cartaocredito.service;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.pdz.cartaocredito.dao.LojaDAO;
 import com.pdz.cartaocredito.entity.Loja;
-import com.pdz.cartaocredito.entity.dto.CompraExportaResponseDTO;
 import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
 import com.pdz.cartaocredito.entity.dto.ResponsavelSalvarArquivoDTO;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
@@ -46,15 +44,8 @@ public class LojaService {
 	 */
 	public Loja buscarLoja(Integer id) {
 		
-		Loja lojaObj;
-		
-		try {
-			lojaObj = lojaRepository.findById(id).get();
-		} catch (ObjectNotFoundException e) {
-			throw new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +Loja.class);
-		}
-		
-		return lojaObj;
+		return lojaRepository.findById(id).orElseThrow(()-> 
+			new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +Loja.class));
 	}
 	
 	/**
@@ -215,8 +206,6 @@ public class LojaService {
 		for (int i = 0; i < lojas.size(); i++) {
 			System.out.println("##########NOME LOJA######"+lojas.get(i).getNome());
 		}
-	//	System.out.println(loja.toString());
-		
-		//return null;
+	
 	}
 }

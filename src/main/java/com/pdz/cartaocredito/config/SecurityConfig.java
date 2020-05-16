@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			"/cartaocredito/**",
 			"/compras/**",
 			"/lojas/**",
-			"/usuarios/**",
+			"/pessoas/**",
 			"/maquinas/**"
 	};
 	

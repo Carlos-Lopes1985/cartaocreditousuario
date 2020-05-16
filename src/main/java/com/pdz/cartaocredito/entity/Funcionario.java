@@ -20,6 +20,8 @@ public class Funcionario extends Pessoa implements Serializable{
 	private String matricula;
 	private LocalDate dataEntrada;
 	
+	
+	
 	public Funcionario(Integer idUsuario, String nome, LocalDate dataNascimento, String cpf, String senha, String email,
 			String matricula, LocalDate dataEntrada) {
 		super(idUsuario, nome, dataNascimento, cpf, senha, email);

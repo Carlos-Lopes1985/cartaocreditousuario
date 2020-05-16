@@ -35,10 +35,9 @@ public class Compra implements Serializable {
 	@JoinColumn(name = "id_loja", referencedColumnName = "id")
 	private Loja loja;
 	
-	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "usuario_id")
-	private Usuario usuario;
+	@JoinColumn(name = "cliente_id")
+	private Cliente cliente;
 	
 	@ManyToOne
 	@JoinColumn(name = "cartao_id")
@@ -49,7 +48,7 @@ public class Compra implements Serializable {
 	}
 
 	public Compra(Integer id, LocalDate dataCompra, Integer status, Double valor, Integer qtdeParcela, Loja loja,
-			Usuario usuario, CartaoCredito cartaoCredito) {
+			Cliente cliente, CartaoCredito cartaoCredito) {
 		super();
 		this.id = id;
 		this.dataCompra = dataCompra;
@@ -57,7 +56,7 @@ public class Compra implements Serializable {
 		this.valor = valor;
 		this.qtdeParcela = qtdeParcela;
 		this.loja = loja;
-		this.usuario = usuario;
+		this.cliente = cliente;
 		this.cartaoCredito = cartaoCredito;
 	}
 
@@ -82,7 +81,7 @@ public class Compra implements Serializable {
 		builder.append(getLoja());
 		builder.append("\n");
 		builder.append(", usuario=");
-		builder.append(getUsuario());
+		builder.append(getCliente());
 		builder.append("\n");
 		builder.append("]");
 		
@@ -129,12 +128,12 @@ public class Compra implements Serializable {
 		this.loja = loja;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public Pessoa getCliente() {
+		return cliente;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 	public CartaoCredito getCartaoCredito() {
