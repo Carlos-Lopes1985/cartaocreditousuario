@@ -7,5 +7,7 @@ import com.pdz.cartaocredito.entity.Compra;
 
 @Repository
 public interface CompraRepository extends JpaRepository<Compra, Integer> {
-
+	
+	//Compra findByDataCompraAndCodSeguranca(String numero, String codSeguranca);
+	
 }

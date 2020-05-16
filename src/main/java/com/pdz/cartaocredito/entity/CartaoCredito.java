@@ -36,9 +36,10 @@ public class CartaoCredito implements Serializable {
 	
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "usuario_id")
-	private Usuario usuario;
+	@JoinColumn(name = "cliente_id")
+	private Cliente cliente;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "cartaoCredito")
 	private List<Compra> compra;
 	
@@ -48,7 +49,7 @@ public class CartaoCredito implements Serializable {
 
 	public CartaoCredito(Integer id, String bandeira, String numeroCartao, String codSeguranca,
 			Double limiteDisponivelTotal, Double limiteDisponivelAtual, Double limiteDisponivelParaSaque,LocalDate dataValidade,
-			Usuario usuario) {
+			LocalDate vencimentoFatura,Cliente cliente) {
 		super();
 		this.id = id;
 		this.bandeira = bandeira;
@@ -58,7 +59,7 @@ public class CartaoCredito implements Serializable {
 		this.limiteDisponivelAtual = limiteDisponivelAtual;
 		this.limiteDisponivelParaSaque = limiteDisponivelParaSaque;
 		this.dataValidade = dataValidade;
-		this.usuario = usuario;
+		this.cliente = cliente;
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class CartaoCredito implements Serializable {
 		return "CartaoCredito [id=" + id + ", bandeira=" + bandeira + ", numeroCartao=" + numeroCartao
 				+ ", codSeguranca=" + codSeguranca + ", limiteDisponivelTotal=" + limiteDisponivelTotal
 				+ ", limiteDisponivelAtual=" + limiteDisponivelAtual + ", limiteDisponivelParaSaque="
-				+ limiteDisponivelParaSaque + ", usuario=" + usuario + "]";
+				+ limiteDisponivelParaSaque + ", usuario=" + cliente + "]";
 	}
 
 	public Integer getId() {
@@ -125,12 +126,12 @@ public class CartaoCredito implements Serializable {
 		this.limiteDisponivelParaSaque = limiteDisponivelParaSaque;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public Pessoa getCliente() {
+		return cliente;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 	public List<Compra> getCompra() {

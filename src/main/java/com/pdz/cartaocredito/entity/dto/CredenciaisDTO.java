@@ -9,25 +9,25 @@ public class CredenciaisDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String serial;
+	private String email;
 	private String senha;
 
 	public CredenciaisDTO() {
 		super();
 	}
 
-	public CredenciaisDTO(String serial, String senha) {
+	public CredenciaisDTO(String email, String senha) {
 		super();
-		this.serial = serial;
+		this.email = email;
 		this.senha = senha;
 	}
 
-	public String getSerial() {
-		return serial;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setSerial(String serial) {
-		this.serial = serial;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getSenha() {

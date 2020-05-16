@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
-public class UsuarioDTO implements Serializable {
+@SuppressWarnings("deprecation")
+public class ClienteDTO implements Serializable {
 	
 	/**
 	 * 
@@ -22,7 +24,7 @@ public class UsuarioDTO implements Serializable {
 	@Length(min=5, max=120, message="O tamanho deve estar entre 5 e 120 caracteres")
 	private String    nome;
 	
-	@NotBlank(message="Preenchimento data nascimento obrigatório")
+	@NotNull(message="Preenchimento data nascimento obrigatório")
 	private LocalDate dataNascimento;
 	
 	@CPF
@@ -50,10 +52,14 @@ public class UsuarioDTO implements Serializable {
 	
 	private LocalDate dataValidade;
 	
-	@NotBlank(message="Preenchimento vencimento fatura obrigatório")
+	@NotNull(message="Preenchimento vencimento fatura obrigatório")
 	private LocalDate vencimentoFatura;
 	
-	public UsuarioDTO(Integer idUsuario, String nome, LocalDate dataNascimento, String cpf, String senha, String email,
+	public ClienteDTO() {
+		super();
+	}
+
+	public ClienteDTO(Integer idUsuario, String nome, LocalDate dataNascimento, String cpf, String senha, String email,
 			String bandeira, String numeroCartao, String codSeguranca, Double limiteDisponivelTotal,
 			Double limiteDisponivelAtual, Double limiteDisponivelParaSaque, LocalDate dataValidade,
 			LocalDate vencimentoFatura) {

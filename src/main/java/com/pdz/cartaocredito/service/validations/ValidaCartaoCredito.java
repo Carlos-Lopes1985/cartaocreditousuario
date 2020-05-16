@@ -104,13 +104,14 @@ public class ValidaCartaoCredito {
 	 */
 	public boolean verificaNumeroCartaoCodSeguranca(String numero, String cod) {
 		
-		Boolean bOk = true;
+		if(cod.length() !=3)
+			return false;
 		
-		try {
-			cartaoCreditoRepository.findByNumeroCartaoAndCodSeguranca(numero, cod);
-		} catch (Exception e) {
-			bOk=false;
-		}
-		return bOk;
+		CartaoCredito cc = cartaoCreditoRepository.findByNumeroCartaoAndCodSeguranca(numero, cod);
+		
+		if(cc==null)
+			return false;
+		
+		return true;
 	}
 }
