@@ -1,8 +1,9 @@
 [![Build Status](https://travis-ci.com/Carlos-Lopes1985/cartaocreditousuario.svg?token=rWDx79qT2YUj9trohyEC&branch=master)](https://travis-ci.com/github/Carlos-Lopes1985/cartaocreditousuario)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=Carlos-Lopes1985_cartaocreditousuario&metric=alert_status)](https://sonarcloud.io/dashboard?id=carlos-lopes1985) 
-[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=Carlos-Lopes1985_cartaocreditousuario&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=carlos-lopes1985)
 [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=Carlos-Lopes1985_cartaocreditousuario&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=carlos-lopes1985)
 [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Carlos-Lopes1985_cartaocreditousuario&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=carlos-lopes1985)
+
+
 Instruções 
 
 1- Efetuar login - 
