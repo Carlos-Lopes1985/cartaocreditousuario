@@ -86,9 +86,9 @@ public class LojaService {
 		List<LojaNovoDTO> lojasAux       = new ArrayList<LojaNovoDTO>();
 		ResponsavelSalvarArquivoDTO resp = new ResponsavelSalvarArquivoDTO();
 		
-		lojas = ArquivoIO.getInstance()
-						 .importaExcel(formataStringCaminho
-								      (DecodificarURL.decodeValue(caminho)));
+		String caminhoImport = formataStringCaminho(new DecodificarURL().decodeValue(caminho));
+		
+		lojas = ArquivoIO.getInstance().importaExcel(caminhoImport);
 		
 		List<LojaNovoDTO> lojasArq = validaListaDoArquivoExcel(lojas,resp);
 		

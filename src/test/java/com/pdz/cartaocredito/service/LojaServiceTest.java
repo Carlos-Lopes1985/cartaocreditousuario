@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,9 +21,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.pdz.cartaocredito.entity.Loja;
+import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
 import com.pdz.cartaocredito.entity.dto.ResponsavelSalvarArquivoDTO;
 import com.pdz.cartaocredito.exception.IOReaderException;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
+import com.pdz.cartaocredito.io.ArquivoIO;
 import com.pdz.cartaocredito.repository.LojaRepository;
 
 import jxl.read.biff.BiffException;
@@ -71,12 +74,20 @@ public class LojaServiceTest {
 		lojaService.importExcelParaBanco(caminhoValido);
 	}
 	
+	@Ignore
 	@Test
 	public void importExcelSucesso() throws BiffException, IOReaderException {
 		
+		LojaNovoDTO lj = new LojaNovoDTO("Americas","73557766000145");
+		List<LojaNovoDTO>ljs = new ArrayList<LojaNovoDTO>();
+		
+		ljs.add(lj);
+		
+		Mockito.when(lojaService.formataStringCaminho(caminhoValido)).thenReturn(caminhoValido);
+		Mockito.when(ArquivoIO.getInstance().importaExcel("lojaimport.xls")).thenReturn(ljs);
 		Mockito.when(lojaRepository.findByCnpj(Mockito.any())).thenReturn(null);
 		
-		ResponsavelSalvarArquivoDTO loja = lojaService.importExcelParaBanco(caminhoValido);
+		ResponsavelSalvarArquivoDTO loja = lojaService.importExcelParaBanco("lojaimport.xls");
 		
 		assertEquals(new Integer(8), loja.getContadorImportados());
 		assertEquals(2,loja.getRegistrosNaoImportados().size());

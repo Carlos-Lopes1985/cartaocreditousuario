@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
 import com.pdz.cartaocredito.exception.IOReaderException;
 
@@ -16,7 +18,10 @@ import jxl.read.biff.BiffException;
 public class ArquivoIO {
 	
 	private static ArquivoIO _instance;
-		
+	
+	@Value("${spring.profiles.active}")
+	private String profile;
+	
 	private ArquivoIO() {
 		// construct object . . .
 	}

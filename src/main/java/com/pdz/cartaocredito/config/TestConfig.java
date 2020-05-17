@@ -26,6 +26,7 @@ public class TestConfig {
 		return true;
 	}
 	
+	
 	@Bean
 	public EmailService emailService() {
 		return new SmtpEmailService();
