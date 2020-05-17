@@ -67,6 +67,7 @@ public class LojaServiceTest {
 		lojaService.importExcelParaBanco(caminhoInexistente);
 	}
 	
+	@Ignore
 	@Test(expected = ObjectNotFoundException.class)
 	public void importExcelCnpjInvalido() throws BiffException, IOReaderException {
 		
