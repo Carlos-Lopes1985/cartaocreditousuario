@@ -164,7 +164,9 @@ public class CompraServiceTest {
 //		
 //		Mockito.when(cartaoCreditoService.buscaCartaoPorNumero(Mockito.any())).thenReturn(cartaoc);
 		
-		doThrow(Exception.class)
+	//	Mockito.when(emailService.sendOrderConfirmationHtmlEmail(Mockito.anyObject()))
+		
+		doThrow(new Exception())
         .when(emailService).sendOrderConfirmationHtmlEmail(Mockito.any());
 		
 		//Mockito.doThrow().when(compraService).enviarEmail(compra);
