@@ -66,7 +66,13 @@ public class LojaServiceTest {
 	public void importExcelParaBancoCaminhoInexistente() throws BiffException {
 		lojaService.importExcelParaBanco(caminhoInexistente);
 	}
-	
+
+
+	/* Achei o seguinte link com alguns exemplo.... pesquisei por mocking Workbook java
+	https://alvinalexander.com/java/jwarehouse/spring-framework-2.5.3/test/org/springframework/web/servlet/view/document/ExcelViewTests.java.shtml
+	A logica seria basicamente vc montar o objeto sheet como se fosse com as colunas do excel, e dps montar um workbook com isso
+	Porém é bem complexo, eu n tive sucesso na minha tentativa, sugiro que deixe os testes envolvendo excel pra la, ou pelo menos por ultimo sabe?
+	 */
 	@Ignore
 	@Test(expected = ObjectNotFoundException.class)
 	public void importExcelCnpjInvalido() throws BiffException, IOReaderException {
@@ -74,7 +80,13 @@ public class LojaServiceTest {
 		Mockito.when(lojaRepository.findByCnpj(Mockito.any())).thenReturn(loja);
 		lojaService.importExcelParaBanco(caminhoValido);
 	}
-	
+
+	/* Esse teste só vai rolar de duas formas:
+		1 - vc descobre como mockar o workbook como eu comentei no teste de cima (bem complexo)
+		2 - vc arruma um jeito de jogar o xls na sua pasta de resource, e dai usar o path relativo dela pra rodar esse teste
+
+		Ou vc pode ignorar tb.
+	 */
 	@Ignore
 	@Test
 	public void importExcelSucesso() throws BiffException, IOReaderException {

@@ -96,8 +96,19 @@ public class CompraServiceTest {
 		Mockito.when(cartaoCreditoService.buscaCartaoPorNumero(Mockito.any())).thenReturn(cartaoc);
 	}
 	
-	
-	@Ignore
+
+	/* Seu teste espera um objectnotfoundexception do seguinte método:
+
+		return compraRepository.findById(id).orElseThrow(()->
+		new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +Compra.class));
+
+
+		OU seja ele só vai retornar ObjectNotFoundException se ele nao encontrar nada no findById
+		Ou seja vc tem q retornar um Optional vazio pra esse teste funcionar, se vc retornar um optional vazio vai ser como se
+		ele nao tivesse encontrado nada na base e ai ele cairia orElseThrow e seu teste passaria com sucesso!
+
+	 */
+
 	@Test(expected = ObjectNotFoundException.class)
 	public void buscarCompraInexistenteTest() {
 			
