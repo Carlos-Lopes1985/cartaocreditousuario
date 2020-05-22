@@ -46,7 +46,12 @@ public class CartaoCreditoServiceTest {
 	@Ignore
 	@Test
 	public void testBuscarTodos() {
-		
+
+		/* 1 - Você ta usando then e o correto é thenReturn ****************
+		*  2 - findall retorna uma lista de cartao de credito entao vc precisa inicializar uma lista de cartao e colocar como parametro do thenreturn!
+		*  3 - Tenta interpretar o ingles, em outras palavras "QUANDO FINDALL DO REPOSITORY FOR CHAMADO ENTAO RETORNE A LISTA Q EU INICIALIZEI"
+		* */
+
 		Mockito.when(cartaoCreditoRepository.findAll()).then(null);
 		
 		assertNotNull(cartaoCreditoService.buscarTodos());
