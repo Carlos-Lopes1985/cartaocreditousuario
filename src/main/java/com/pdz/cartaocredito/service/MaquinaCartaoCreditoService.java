@@ -27,13 +27,8 @@ public class MaquinaCartaoCreditoService {
 //			throw new AuthorizationException("Acesso negado");
 //		}
 		
-		MaquinaCartaoCredito maq = maquinaCartaoCreditoRepository.findById(id).get();
-		
-		if(maq == null) {
-			throw new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +MaquinaCartaoCredito.class);
-		}
-		
-		return maq;
+		return maquinaCartaoCreditoRepository.findById(id).orElseThrow(()-> 
+		new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +MaquinaCartaoCredito.class));
 	}
 
 }

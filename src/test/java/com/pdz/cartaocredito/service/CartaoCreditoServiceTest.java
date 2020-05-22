@@ -2,11 +2,11 @@ package com.pdz.cartaocredito.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -19,7 +19,7 @@ import com.pdz.cartaocredito.entity.Cliente;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CartaoCreditoRepository;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class) 
 public class CartaoCreditoServiceTest {
 	
 	private static final String NUMERO_CARTAO_VALIDO = "11112222333344445555";
@@ -43,17 +43,14 @@ public class CartaoCreditoServiceTest {
 	}
 	
 	
-	@Ignore
 	@Test
-	public void testBuscarTodos() {
-		
-		Mockito.when(cartaoCreditoRepository.findAll()).then(null);
-		
+	public void testBuscarTodosTest() {
+	
 		assertNotNull(cartaoCreditoService.buscarTodos());
 	}
 	
 	@Test(expected = ObjectNotFoundException.class)
-	public void buscarNumeroCartaoInexistente() {
+	public void buscarNumeroCartaoInexistenteTest() {
 	
 		Mockito.when(cartaoCreditoRepository.findByNumeroCartao(Mockito.any())).thenReturn(null);
 		
@@ -61,12 +58,18 @@ public class CartaoCreditoServiceTest {
 	}
 	
 	@Test
-	public void buscarNumeroCartaoExistente() {
+	public void buscarNumeroCartaoExistenteTest() {
 		
 		Mockito.when(cartaoCreditoRepository.findByNumeroCartao(Mockito.any())).thenReturn(cc);
 		CartaoCredito cCredito = cartaoCreditoService.buscaCartaoPorNumero(NUMERO_CARTAO_VALIDO);
 		
 		assertEquals(NUMERO_CARTAO_VALIDO,cCredito.getNumeroCartao());
 		
+	}
+	
+	@Test
+	public void salvarLojaSucessoTest() {
+		
+		when(cartaoCreditoService.salvar(cc)).thenReturn(new CartaoCredito());
 	}
 }

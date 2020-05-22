@@ -15,14 +15,13 @@ public class CartaoCreditoService {
 	@Autowired
 	private CartaoCreditoRepository cartaoCreditoRepository;
 	
-	public CartaoCredito buscaCartaoPorNumero(String numero) {
+	public CartaoCredito buscaCartaoPorNumero(String numero)throws ObjectNotFoundException {
 		
 		CartaoCredito  cc = cartaoCreditoRepository.findByNumeroCartao(numero);
 		
 		if(cc==null) {
 			throw new ObjectNotFoundException("Cartão de Crédito não encontrado! Id: " +numero+ "numero: " +CartaoCredito.class);
 		}
-		
 		return cc;
 	}
 	
