@@ -23,7 +23,7 @@ public class ArquivoIO {
 	private String profile;
 	
 	private ArquivoIO() {
-		// construct object . . .
+	
 	}
 
 	// For lazy initialization
@@ -33,7 +33,7 @@ public class ArquivoIO {
 		}
 		return _instance;
 	}
-	// Remainder of class definition . . .
+ 
 	
 	public  List<LojaNovoDTO> importaExcel(String caminho) throws IOReaderException, BiffException {
 		

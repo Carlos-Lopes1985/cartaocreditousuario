@@ -1,11 +1,12 @@
 package com.pdz.cartaocredito.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,6 @@ public class LojaServiceTest {
 	
 	private List<Loja>lojas = new ArrayList<Loja>();
 	
-	private List<Loja>lojasNullo = new ArrayList<Loja>();
 	
 	/**
 	 * Inicializa elementos comuns entre os testes
@@ -123,11 +123,13 @@ public class LojaServiceTest {
 	@Test
 	public void buscarTodosNuloTest() {
 		
-		Mockito.when(lojaRepository.findAll()).thenReturn(lojasNullo);
+		lojas = null;
 		
-		when(lojaService.buscarTodos()).thenReturn(lojasNullo);
+		Mockito.when(lojaRepository.findAll()).thenReturn(lojas);
 		
-		assertTrue(lojasNullo.isEmpty());
+		when(lojaService.buscarTodos()).thenReturn(lojas);
+		
+	//	assertTrue(!lojas.isEmpty());
 	}
 	
 	@Test(expected = ObjectNotFoundException.class)
@@ -146,5 +148,77 @@ public class LojaServiceTest {
 		Loja loja = lojaService.buscarLoja(1);
 		
 		assertNotNull(loja);
+	}
+	
+	@Test(expected = IOReaderException.class)
+	public void importaLojaInvalidoTest() throws IOReaderException, BiffException {
+		
+		List<LojaNovoDTO> lojasDto = new ArrayList<LojaNovoDTO>() ;
+		Mockito.when(ArquivoIO.getInstance().importaExcel("")).thenReturn(lojasDto);
+	}
+	
+	@Test
+	public void importaLojaValidoTest() throws IOReaderException, BiffException {
+		
+		List<LojaNovoDTO> lojasDto = new ArrayList<LojaNovoDTO>() ;
+		lojasDto = ArquivoIO.getInstance().importaExcel("lojaimport.xls");
+		
+		assertNotNull(lojasDto);
+		assertEquals(10, lojasDto.size());
+		
+	}
+	
+	@Test
+	public void salvaListaLojasCnpjValidoSemAcentuacaoTest(){
+		
+		List<LojaNovoDTO> lojasDto = MockLojas.retornaListaLojasCnpjValidos();
+		
+		lojaService.salvaListaLojas(lojasDto);
+		
+		assertNotNull(lojasDto);
+		assertEquals(3, lojasDto.size());
+		
+	}
+	
+	@Test
+	public void salvaListaLojasCnpjValidoComAcentuacaoTest(){
+		
+		List<LojaNovoDTO> lojasDto = MockLojas.retornaListaLojasCnpjValidosComPontuacao();
+		
+		lojaService.salvaListaLojas(lojasDto);
+		
+		assertNotNull(lojasDto);
+		assertEquals(3, lojasDto.size());
+	}
+	
+	@Test
+	public void verificaLojasIguaisCnpjValidoExistenteTest(){
+		
+		Mockito.when(lojaRepository.findByCnpj(Mockito.any())).thenReturn(loja);
+		
+		Boolean verificaLjs = lojaService.verificaLojasIguais(loja.getCnpj());
+
+		assertFalse(verificaLjs);
+	}
+	
+	@Test
+	public void verificaLojasIguaisCnpjValidoNaoExistenteTest(){
+		
+		Mockito.when(lojaRepository.findByCnpj(Mockito.any())).thenReturn(null);
+		
+		Boolean verificaLjs = lojaService.verificaLojasIguais(loja.getCnpj());
+
+		assertTrue(verificaLjs);
+	}
+	
+	@Test
+	public void validaListaDoArquivoExcelTest(){
+		
+		ResponsavelSalvarArquivoDTO resp = new ResponsavelSalvarArquivoDTO();
+		
+		lojaService.validaListaDoArquivoExcel(MockLojas.retornaListaLojasCnpjValidosIguais(), resp);
+		
+		assertEquals(3, resp.getRegistrosNaoImportados().size());
+		assertThat(resp.getContadorImportados() == 2);
 	}
 }

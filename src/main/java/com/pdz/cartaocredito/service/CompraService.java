@@ -1,21 +1,16 @@
 package com.pdz.cartaocredito.service;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pdz.cartaocredito.dao.LojaDAO;
 import com.pdz.cartaocredito.entity.CartaoCredito;
 import com.pdz.cartaocredito.entity.Cliente;
 import com.pdz.cartaocredito.entity.Compra;
 import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
 import com.pdz.cartaocredito.entity.dto.CompraDTO;
-import com.pdz.cartaocredito.entity.dto.CompraExportarDTO;
 import com.pdz.cartaocredito.exception.DataIntegrityException;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CompraRepository;
@@ -67,7 +62,7 @@ public class CompraService {
 			enviarEmail(comprasObj);
 		} catch (Exception e) {
 			throw new DataIntegrityException("Email não enviado");
-		} 
+		}
 		return comprasObj;
 	}
 	
@@ -125,16 +120,14 @@ public class CompraService {
 	 * @param compra
 	 * @throws Exception
 	 */
-	public void atualizaLimiteDisponivel(CompraDTO compra)throws Exception{
+	public void atualizaLimiteDisponivel(CompraDTO compra){
 		
 		CartaoCredito cartao = cartaoCreditoService.buscaCartaoPorNumero(compra.getNumeroCartao());
 		
 		cartao.setId(cartao.getId());
 		cartao.setLimiteDisponivelAtual( cartao.getLimiteDisponivelAtual() - compra.getValor()
 				);
-		
 		cartaoCreditoService.salvar(cartao);
-		
 	}
 	
 	/**
@@ -154,27 +147,7 @@ public class CompraService {
 	 */
 	public Compra buscarCompra(Integer id) {
 		
-		Compra compra = new Compra();
-		
-		try {
-			compra = compraRepository.findById(id).get();
-		} catch (Exception e) {
-			throw new ObjectNotFoundException("Compra não encontrada!");
-		}
-		return compra;
-	}
-
-	/**
-	 * 
-	 * @param compra
-	 */
-	public void exportaExcelCompras(@Valid CompraExportarDTO compra) {
-		LojaDAO lj = new LojaDAO();
-		List<Loja> lojas = new ArrayList<Loja>();
-		lj.listar();
-		for (int i = 0; i < lojas.size(); i++) {
-			System.out.println("##########NOME LOJA######"+lojas.get(i).getNome());
-		}
-		lj.buscaComprasLojasUsuarios();
+		return compraRepository.findById(id).orElseThrow(()-> 
+		new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +Compra.class));
 	}
 }

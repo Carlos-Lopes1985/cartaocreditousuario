@@ -41,8 +41,9 @@ public class LojaService {
 	 * 
 	 * @param id
 	 * @return
+	 * @throws ObjectNotFoundException 
 	 */
-	public Loja buscarLoja(Integer id) {
+	public Loja buscarLoja(Integer id) throws ObjectNotFoundException {
 		
 		return lojaRepository.findById(id).orElseThrow(()-> 
 			new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +Loja.class));
@@ -53,8 +54,9 @@ public class LojaService {
 	 * 
 	 * @param loja
 	 * @return
+	 * @throws ObjectNotFoundException 
 	 */
-	public Loja salvar(Loja loja) {
+	public Loja salvar(Loja loja) throws ObjectNotFoundException {
 		
 		if(loja == null) {
 			throw new ObjectNotFoundException("Loja não pode ser nulo!");
@@ -169,7 +171,7 @@ public class LojaService {
 	 * @param lojas
 	 * @return
 	 */
-	public static List<LojaNovoDTO> validaListaDoArquivoExcel(List<LojaNovoDTO> lojas, ResponsavelSalvarArquivoDTO resp) {
+	public List<LojaNovoDTO> validaListaDoArquivoExcel(List<LojaNovoDTO> lojas, ResponsavelSalvarArquivoDTO resp) {
 		
 		List<LojaNovoDTO>lojaAux           = new ArrayList<LojaNovoDTO>();
 		List<String>     cnpjNaoImportados = new ArrayList<String>();
