@@ -3,6 +3,8 @@
 [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=Carlos-Lopes1985_cartaocreditousuario&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=carlos-lopes1985)
 [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Carlos-Lopes1985_cartaocreditousuario&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=carlos-lopes1985)
 
+[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=Carlos-Lopes1985_cartaocreditousuario&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=carlos-lopes1985)
+
 
 Instruções 
 
