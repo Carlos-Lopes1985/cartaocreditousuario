@@ -108,7 +108,6 @@ public class CompraServiceTest {
 		ele nao tivesse encontrado nada na base e ai ele cairia orElseThrow e seu teste passaria com sucesso!
 
 	 */
-
 	@Test(expected = ObjectNotFoundException.class)
 	public void buscarCompraInexistenteTest() {
 			
@@ -166,6 +165,68 @@ public class CompraServiceTest {
 		
 		assertNull(compras);
 	}
+
+	/* ESTE MÉTODO FAZ VÁRIOS CENÁRIOS DE TESTES
+	Fluxos de teste:
+	1 Cenário :
+		1 - salvarCompras()
+			2 - fromDTO(compra)
+				3 - maqRepository.findBySerial()
+					SE a maquina nao for encontrada ele vai retornar ObjectNotFoundException(" Maquina não encontrado! Id: " +obj.getSerial()+ "Tipo: " +MaquinaCartaoCredito.class);
+	Exmeplo solucao: Em outras palavras se vc for fazer o teste desse cenário vc vai ter q mockar o maqRepository.findBySerial para retornar null!
+=========================================================
+	2 Cenário :
+		1 - salvarCompras()
+			2 - validaCompra.verificaInformacoesCartao(comprasObj)
+				3 - validaCompra.verificaInformacoesCartao(comprasObj)
+					*** ESSE METODO TEM 3 CASOS DE EXCEPTION
+					 -throw new DataIntegrityException("Número de cartão inválido! "+ compras.getCartaoCredito().getNumeroCartao());
+					 -throw new DataIntegrityException("Código de segurança inválido! "+ compras.getCartaoCredito().getCodSeguranca());
+					 -throw new DataIntegrityException("Limite Indisponivel! "+ compras.getCartaoCredito().getLimiteDisponivelAtual());
+					 	- Nesse caso ele ainda manda email enviarEmail(compras); talvez ainda precise mockar esse cara, ou simular exception com ele
+	Exmeplo solucao: eu faria 3 casos de testes, um pra cada um desses
+		Simularia passando numero de cartao invalido
+		Simularia passando Código de segurança inválido
+		Simularia passando Limite Indisponivel
+=============================================================
+	3 Cenário :
+	1 - salvarCompras()
+		2 - validaUsuario.verificaSenhaUsuario(comprasObj.getCliente());
+			3 - usuarioRepository.findById()
+			4 - if(!pe.matches(usuario.getSenha(),user.getSenha()))
+				throw new MethodFailureException("Senha digitada é inválida");
+
+	Exmeplo solucao: Nesse caso criaria um teste para validar se a senha é invalida
+	Mockaria o metodo usuarioRepository.findById() para ele retornar um objeto com a senha diferente da q eu informei
+	E dava um expect no MethodFailureException
+
+=============================================================
+	4 Cenário :
+	1 - salvarCompras()
+
+		try{
+			enviarEmail(comprasObj);
+		} catch (Exception e) {
+			throw new DataIntegrityException("Email não enviado");
+		}
+
+	Eu analisei o metodo enviarEmail e nao vi nenhnuma situacao onde ele estoura exception, entao nao sei como testar essa exceção!
+	Caso vc venha a ajustar esse fluxo ai seria o cenario onde o email n foi enviado
+
+=============================================================
+	5 Cenário : DE SUCESSO
+
+	**** para o fluxo de sucesso vc vai precisar mockar tudo q mockamos anteriormente! e usar dados validos!
+	Mocks:
+		cartaoCreditoService.buscaCartaoPorNumero(obj.getNumeroCartao());
+		maqRepository.findBySerial(obj.getSerial());
+		emailService.sendOrderCompraNegadaHtmlEmail(compraObj)
+		usuarioRepository.findById(usuario.getIdUsuario()).get()
+		cartaoCreditoService.buscaCartaoPorNumero(compra.getNumeroCartao())
+		cartaoCreditoService.salvar(cartao)
+		compraRepository.save(comprasObj)
+		emailService.sendOrderConfirmationHtmlEmail(compraObj)
+	 */
 	
 	@Test(expected = DataIntegrityException.class)
 	public void enviarEmailTest() throws Exception {
@@ -177,8 +238,8 @@ public class CompraServiceTest {
 		
 	//	Mockito.when(emailService.sendOrderConfirmationHtmlEmail(Mockito.anyObject()))
 		
-		doThrow(new Exception())
-        .when(emailService).sendOrderConfirmationHtmlEmail(Mockito.any());
+//		doThrow(new Exception())
+//        .when(emailService).sendOrderConfirmationHtmlEmail(Mockito.any());
 		
 		//Mockito.doThrow().when(compraService).enviarEmail(compra);
 		
