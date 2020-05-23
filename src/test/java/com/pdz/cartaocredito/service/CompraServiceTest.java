@@ -65,6 +65,7 @@ public class CompraServiceTest {
 	private MaquinaCartaoCredito maq;
 	
 	private	CartaoCredito cartaoc ;
+	
 	/**
 	 * Inicializa elementos comuns entre os testes
 	 * @throws Exception 
@@ -81,18 +82,18 @@ public class CompraServiceTest {
 		cartaoc.setId(1);
 		cartaoc.setLimiteDisponivelAtual(200.);
 		cartaoc.setCliente(c);
-		
-		 cc = new Compra(1, LocalDate.now(), null, 1000., 0, l, c, cartaoc);
-		 
-		 compraDto = new CompraDTO(LocalDate.now(), 200., "5554446677889999", "5554446677889999", "231", "1234");
-		
-		 maq = new MaquinaCartaoCredito(1, "XPTO", "123",l);
-		 compras.add(cc);
-		 
-		 Mockito.when(validaCompra.verificaInformacoesCartao(Mockito.any())).thenReturn(true);
-			
+
+		cc = new Compra(1, LocalDate.now(), null, 1000., 0, l, c, cartaoc);
+
+		compraDto = new CompraDTO(LocalDate.now(), 200., "5554446677889999", "5554446677889999", "231", "1234");
+
+		maq = new MaquinaCartaoCredito(1, "XPTO", "123", l);
+		compras.add(cc);
+
+		Mockito.when(validaCompra.verificaInformacoesCartao(Mockito.any())).thenReturn(true);
+
 		Mockito.when(validaUsuario.verificaSenhaUsuario(Mockito.any())).thenReturn(true);
-			
+
 		Mockito.when(cartaoCreditoService.buscaCartaoPorNumero(Mockito.any())).thenReturn(cartaoc);
 	}
 

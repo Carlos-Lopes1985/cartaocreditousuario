@@ -16,11 +16,12 @@ import com.pdz.cartaocredito.entity.Cliente;
 import com.pdz.cartaocredito.entity.Pessoa;
 import com.pdz.cartaocredito.entity.dto.ClienteDTO;
 import com.pdz.cartaocredito.exception.DataIntegrityException;
+import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CartaoCreditoRepository;
 import com.pdz.cartaocredito.repository.PessoaRepository;
 
 @Service
-public class UsuarioService {
+public class PessoaService {
 	
 	@Autowired
 	private PessoaRepository pessoaRepository;
@@ -31,14 +32,13 @@ public class UsuarioService {
 	@Autowired
 	private BCryptPasswordEncoder pe;
 	
-	public Cliente salvar(Cliente usu) throws Exception {
+	public Cliente salvar(Cliente usu) throws DataIntegrityException {
 		
-		try {
-			
-			pessoaRepository.save(usu);
-			
+		Pessoa pessoa =	pessoaRepository.save(usu);
+		
+		if(pessoa != null)
 			cartaoCreditoRepository.saveAll(usu.getCartoes());
-		} catch (DataIntegrityException e) {
+		else {
 			throw new DataIntegrityException("Erro no cadastro do usuário");
 		}
 		return usu;
@@ -49,7 +49,8 @@ public class UsuarioService {
 	}
 	
 	public Pessoa buscarUsuario(Integer id) {
-		return pessoaRepository.findById(id).get();
+		return pessoaRepository.findById(id).orElseThrow(()-> 
+		new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +Pessoa.class));
 	}
 
 	public Cliente fromDto(@Valid ClienteDTO objDto) {

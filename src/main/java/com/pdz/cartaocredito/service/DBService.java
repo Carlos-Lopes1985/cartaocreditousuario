@@ -14,6 +14,7 @@ import com.pdz.cartaocredito.entity.Compra;
 import com.pdz.cartaocredito.entity.Funcionario;
 import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
+import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CartaoCreditoRepository;
 import com.pdz.cartaocredito.repository.CompraRepository;
 import com.pdz.cartaocredito.repository.LojaRepository;
@@ -41,7 +42,7 @@ public class DBService {
 	@Autowired
 	private BCryptPasswordEncoder pe;
 	
-	public void instanciateTestDatabase()throws ParseException{
+	public void instanciateTestDatabase()throws ObjectNotFoundException{
 		
 		Cliente user1 = new Cliente(null,"Carlos",LocalDate.now(),"11792993706",pe.encode("12345") ,"caka19_rj@hotmail.com");
 		Cliente user2 = new Cliente(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("12345") ,"caka199_rj@hotmail.com");

@@ -17,14 +17,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.pdz.cartaocredito.entity.Cliente;
 import com.pdz.cartaocredito.entity.Pessoa;
 import com.pdz.cartaocredito.entity.dto.ClienteDTO;
-import com.pdz.cartaocredito.service.UsuarioService;
+import com.pdz.cartaocredito.service.PessoaService;
 
 @RestController
 @RequestMapping(value="/pessoas")
 public class PessoaResource {
 
 	@Autowired
-	private UsuarioService usuarioService;
+	private PessoaService usuarioService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Pessoa>> findAll()throws Exception{
