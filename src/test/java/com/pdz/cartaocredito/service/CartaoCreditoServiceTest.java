@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +33,9 @@ public class CartaoCreditoServiceTest {
 	private CartaoCreditoRepository cartaoCreditoRepository;
 	
 	private CartaoCredito cc;
+	
+	private List<CartaoCredito>cartoes = new ArrayList<CartaoCredito>();
+	
 	/**
 	 * Inicializa elementos comuns entre os testes
 	 * 
@@ -40,20 +45,17 @@ public class CartaoCreditoServiceTest {
 		Cliente c = new Cliente();
 		c.setIdUsuario(1);
 		cc = new CartaoCredito(1, "Master", NUMERO_CARTAO_VALIDO, "231", 200., 1000., 5000., LocalDate.now(), LocalDate.now(),c);
+		cartoes.add(cc);
 	}
-	
 
 	@Test
 	public void testBuscarTodos() {
-
-		/* 1 - Você ta usando then e o correto é thenReturn ****************
-		*  2 - findall retorna uma lista de cartao de credito entao vc precisa inicializar uma lista de cartao e colocar como parametro do thenreturn!
-		*  3 - Tenta interpretar o ingles, em outras palavras "QUANDO FINDALL DO REPOSITORY FOR CHAMADO ENTAO RETORNE A LISTA Q EU INICIALIZEI"
-		* */
-
-		Mockito.when(cartaoCreditoRepository.findAll()).then(null);
+		
+		Mockito.when(cartaoCreditoRepository.findAll()).thenReturn(cartoes);
 		
 		assertNotNull(cartaoCreditoService.buscarTodos());
+		assertEquals(cartoes.size(), 1);
+		assertNotNull(cartoes.size());
 	}
 	
 	@Test(expected = ObjectNotFoundException.class)
@@ -71,7 +73,6 @@ public class CartaoCreditoServiceTest {
 		CartaoCredito cCredito = cartaoCreditoService.buscaCartaoPorNumero(NUMERO_CARTAO_VALIDO);
 		
 		assertEquals(NUMERO_CARTAO_VALIDO,cCredito.getNumeroCartao());
-		
 	}
 
 	@Test
