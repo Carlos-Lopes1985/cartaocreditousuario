@@ -21,12 +21,43 @@ public class JWTUtil {
 	@Value("${jwt.expiration}")
 	private Long expiration;
 	
-	public String generateToken(String serial) {
-		return Jwts.builder()
-				.setSubject(serial)
-				.setExpiration(new Date(System.currentTimeMillis() + expiration))
-				.signWith(SignatureAlgorithm.HS512, secret.getBytes()).compact();
+	static final String CLAIM_KEY_USERNAME = "sub";
+	static final String CLAIM_KEY_ROLE = "role";
+	static final String CLAIM_KEY_AUDIENCE = "audience";
+	static final String CLAIM_KEY_CREATED = "created";
+	
+	/**
+	 * Retorna um novo token JWT com base nos dados do usuários.
+	 * 
+	 * @param userDetails
+	 * @return String
+	 */
+	public String obterToken(UserDetails userDetails) {
+		Map<String, Object> claims = new HashMap<>();
+		claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+		userDetails.getAuthorities().forEach(authority -> claims.put(CLAIM_KEY_ROLE, authority.getAuthority()));
+		claims.put(CLAIM_KEY_CREATED, new Date());
+
+		return gerarToken(claims);
 	}
+
+	/**
+	 * Gera um novo token JWT contendo os dados (claims) fornecidos.
+	 * 
+	 * @param claims
+	 * @return String
+	 */
+	private String gerarToken(Map<String, Object> claims) {
+		return Jwts.builder().setClaims(claims).setExpiration(new Date(System.currentTimeMillis() + expiration))
+				.signWith(SignatureAlgorithm.HS512, secret).compact();
+	}
+	
+//	public String generateToken(String email) {
+//		return Jwts.builder()
+//				.setSubject(email)
+//				.setExpiration(new Date(System.currentTimeMillis() + expiration))
+//				.signWith(SignatureAlgorithm.HS512, secret.getBytes()).compact();
+//	}
 	
 	public Boolean tokenValido(String token) {
 		Claims claims = getClaims(token);

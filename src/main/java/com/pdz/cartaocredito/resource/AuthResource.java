@@ -51,7 +51,7 @@ public class AuthResource {
 	@RequestMapping(value = "/refresh_token", method = RequestMethod.POST)
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
 		UserSS user = UserService.authenticated();
-		String token = jwtUtil.generateToken(user.getUsername());
+		String token = jwtUtil.obterToken(user);
 		response.addHeader("Authorization", "Bearer " + token);
 		response.addHeader("access-control-expose-headers", "Authorization");
 		return ResponseEntity.noContent().build();
@@ -83,7 +83,7 @@ public class AuthResource {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationDto.getEmail());
-		String token = jwtUtil.generateToken(userDetails.getPassword());
+		String token = jwtUtil.obterToken(userDetails);
 		response.setData(new TokenDto(token));
 
 		return ResponseEntity.ok(response);
