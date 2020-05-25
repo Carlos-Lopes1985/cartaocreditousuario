@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,17 +47,18 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		}
 	}
 	
-	@Override
-    protected void successfulAuthentication(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
-	
-		String username = ((UserSS) auth.getPrincipal()).getUsername();
-        String token = jwtUtil.generateToken(username);
-        res.addHeader("Authorization", "Bearer " + token);
-        res.addHeader("access-control-expose-headers", "Authorization");
-	}
+//	@Override
+//    protected void successfulAuthentication(HttpServletRequest req,
+//                                            HttpServletResponse res,
+//                                            FilterChain chain,
+//                                            Authentication auth) throws IOException, ServletException {
+//	
+//		String username = ((UserSS) auth.getPrincipal()).getUsername();
+//        String token = jwtUtil.obterToken(username);
+//        res.addHeader("Authorization", "Bearer " + token);
+//        res.addHeader("access-control-expose-headers", "Authorization");
+//     
+//	}
 	
 	private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
 		 
