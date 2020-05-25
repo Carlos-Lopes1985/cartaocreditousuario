@@ -25,6 +25,13 @@ public class JWTUtil {
 	static final String CLAIM_KEY_ROLE = "role";
 	static final String CLAIM_KEY_AUDIENCE = "audience";
 	static final String CLAIM_KEY_CREATED = "created";
+//	
+//	public String generateToken(String email) {
+//		return Jwts.builder()
+//				.setSubject(email)
+//				.setExpiration(new Date(System.currentTimeMillis() + expiration))
+//				.signWith(SignatureAlgorithm.HS512, secret.getBytes()).compact();
+//	}
 	
 	/**
 	 * Retorna um novo token JWT com base nos dados do usuários.
@@ -40,7 +47,6 @@ public class JWTUtil {
 
 		return gerarToken(claims);
 	}
-
 	/**
 	 * Gera um novo token JWT contendo os dados (claims) fornecidos.
 	 * 
@@ -48,16 +54,9 @@ public class JWTUtil {
 	 * @return String
 	 */
 	private String gerarToken(Map<String, Object> claims) {
-		return Jwts.builder().setClaims(claims).setExpiration(new Date(System.currentTimeMillis() + expiration))
+		return Jwts.builder().setClaims(claims).setExpiration(new Date(System.currentTimeMillis() +expiration))
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
-	
-//	public String generateToken(String email) {
-//		return Jwts.builder()
-//				.setSubject(email)
-//				.setExpiration(new Date(System.currentTimeMillis() + expiration))
-//				.signWith(SignatureAlgorithm.HS512, secret.getBytes()).compact();
-//	}
 	
 	public Boolean tokenValido(String token) {
 		Claims claims = getClaims(token);
