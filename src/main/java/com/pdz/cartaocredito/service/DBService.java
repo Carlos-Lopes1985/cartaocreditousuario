@@ -44,14 +44,9 @@ public class DBService {
 	public void instanciateTestDatabase()throws ParseException{
 		
 		Cliente user1 = new Cliente(null,"Carlos",LocalDate.now(),"11792993706",pe.encode("123456") ,"caka19_rj@hotmail.com");
-		Cliente user2 = new Cliente(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("12345") ,"caka199_rj@hotmail.com");
+		Cliente user2 = new Cliente(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("123456") ,"caka199_rj@hotmail.com");
 		Funcionario user3 = new Funcionario(null,"Juvenal",LocalDate.now(),"11792993708",pe.encode("123456") ,"carlosslopes1985@hotmail.com","T565647",LocalDate.now());
-//		Usuario user4 = new Usuario(null,"Carlos",LocalDate.now(),"11792993706", pe.encode("12345") ,"caka19_rj@hotmail.com");
-//		Usuario user5 = new Usuario(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("12345") ,"caka19_rj@hotmail.com");
-//		Usuario user6 = new Usuario(null,"Juvenal",LocalDate.now(),"11792993708",pe.encode("123678"),"carlosslopes1985@hotmail.com");
-//		Usuario user7 = new Usuario(null,"Carlos",LocalDate.now(),"11792993706", pe.encode("123678"),"caka19_rj@hotmail.com");
-//		Usuario user8 = new Usuario(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("123678"),"caka19_rj@hotmail.com");
-//		Usuario user9 = new Usuario(null,"Juvenal",LocalDate.now(),"11792993708",pe.encode("123678"),"carlosslopes1985@hotmail.com");
+	
 		user1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));               
 		user2.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 		user3.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
@@ -59,8 +54,7 @@ public class DBService {
 		CartaoCredito cc  = new CartaoCredito(null, "Master", "4235879000023233", "239", 2500., 1000., 200.,LocalDate.now(),LocalDate.now(), user1);
 		CartaoCredito cc1 = new CartaoCredito(null, "Visa",   "4235879000023243", "238", 1500., 200., 400.,LocalDate.now(),LocalDate.now(), user1);
 		CartaoCredito cc2 = new CartaoCredito(null, "Alelo",  "4235879000023253", "237", 5500., 2000., 600.,LocalDate.now(),LocalDate.now(), user2);
-	//	CartaoCredito cc3 = new CartaoCredito(null, "Sodex",  "4235879000023263", "236", 7500., 4000., 2700.,LocalDate.now(),LocalDate.now() user3);
-		
+	
 		Loja l1 = new Loja(null,"lojas americanas", "11792993706");
 		Loja l2 = new Loja(null,"Magazine luiza", "11792993707");
 		Loja l3 = new Loja(null,"Pernambucanas", "11792993708");
