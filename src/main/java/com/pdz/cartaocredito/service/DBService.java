@@ -43,9 +43,9 @@ public class DBService {
 	
 	public void instanciateTestDatabase()throws ParseException{
 		
-		Cliente user1 = new Cliente(null,"Carlos",LocalDate.now(),"11792993706",pe.encode("12345") ,"caka19_rj@hotmail.com");
+		Cliente user1 = new Cliente(null,"Carlos",LocalDate.now(),"11792993706",pe.encode("123456") ,"caka19_rj@hotmail.com");
 		Cliente user2 = new Cliente(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("12345") ,"caka199_rj@hotmail.com");
-		Funcionario user3 = new Funcionario(null,"Juvenal",LocalDate.now(),"11792993708",pe.encode("12345") ,"carlosslopes1985@hotmail.com","T565647",LocalDate.now());
+		Funcionario user3 = new Funcionario(null,"Juvenal",LocalDate.now(),"11792993708",pe.encode("123456") ,"carlosslopes1985@hotmail.com","T565647",LocalDate.now());
 //		Usuario user4 = new Usuario(null,"Carlos",LocalDate.now(),"11792993706", pe.encode("12345") ,"caka19_rj@hotmail.com");
 //		Usuario user5 = new Usuario(null,"Roberto",LocalDate.now(),"11792993707",pe.encode("12345") ,"caka19_rj@hotmail.com");
 //		Usuario user6 = new Usuario(null,"Juvenal",LocalDate.now(),"11792993708",pe.encode("123678"),"carlosslopes1985@hotmail.com");
