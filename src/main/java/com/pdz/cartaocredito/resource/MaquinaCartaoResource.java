@@ -2,6 +2,8 @@ package com.pdz.cartaocredito.resource;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +21,10 @@ public class MaquinaCartaoResource {
 	@Autowired
 	private MaquinaCartaoCreditoService maquinaService;
 	
+	private static final Logger log = LoggerFactory.getLogger(MaquinaCartaoResource.class);
+	
 	/**
+	 * Efetua a busca de todas as maquinas cadastradas
 	 * 
 	 * @return
 	 * @throws Exception
@@ -27,10 +32,13 @@ public class MaquinaCartaoResource {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<MaquinaCartaoCredito>> buscarTodos()throws Exception{
 		
+		log.info("Buscando todas as maquinas cadastradas");
+		
 		return ResponseEntity.ok().body(maquinaService.buscarTodos());
 	}
 	
 	/**
+	 * Efetua a busca por id de uma maquina
 	 * 
 	 * @param id
 	 * @return
@@ -39,19 +47,8 @@ public class MaquinaCartaoResource {
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<MaquinaCartaoCredito> buscarUm(@PathVariable Integer id)throws Exception{
 		
+		log.info("Buscando todas as maquinas cadastradas por ID: ", id);
+		
 		return ResponseEntity.ok().body(maquinaService.buscarMaquina(id));
 	}
-	
-//	@RequestMapping(method = RequestMethod.POST)
-//	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioDTO objDto) throws Exception{
-//		
-//		Usuario obj = maquinaService.fromDto(objDto);
-//		
-//		obj = maquinaService.salvar(obj);
-//		
-//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-//				.path("/{id}").buildAndExpand(obj.getIdUsuario()).toUri();
-//		
-//		return ResponseEntity.created(uri).build();
-//	}
 }

@@ -1,21 +1,18 @@
 package com.pdz.cartaocredito.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pdz.cartaocredito.dao.LojaDAO;
 import com.pdz.cartaocredito.entity.CartaoCredito;
 import com.pdz.cartaocredito.entity.Cliente;
 import com.pdz.cartaocredito.entity.Compra;
 import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.MaquinaCartaoCredito;
 import com.pdz.cartaocredito.entity.dto.CompraDTO;
-import com.pdz.cartaocredito.entity.dto.CompraExportarDTO;
 import com.pdz.cartaocredito.exception.DataIntegrityException;
 import com.pdz.cartaocredito.exception.ObjectNotFoundException;
 import com.pdz.cartaocredito.repository.CompraRepository;
@@ -24,9 +21,17 @@ import com.pdz.cartaocredito.service.email.EmailService;
 import com.pdz.cartaocredito.service.validations.ValidaCartaoCredito;
 import com.pdz.cartaocredito.service.validations.ValidaUsuario;
 
+/**
+ * Responsável pelas operações referentes a compras efetudas pelo usuário
+ * 
+ * @author zupper
+ *
+ */
 @Service
 public class CompraService {
-
+	
+	private static final Logger log = LoggerFactory.getLogger(CompraService.class);
+	
 	@Autowired
 	private CompraRepository compraRepository;
 	
@@ -54,6 +59,8 @@ public class CompraService {
 	 */
 	public Compra salvarCompras(CompraDTO compra) throws Exception {
 		
+		log.info("Iniciando cadastro de compras realizadas, salvarCompras(){}.", CompraDTO.class);
+		
 		Compra comprasObj = fromDTO(compra); 
 		
 		validaCompra.verificaInformacoesCartao(comprasObj);
@@ -63,9 +70,13 @@ public class CompraService {
 		
 		compraRepository.save(comprasObj);
 		
+		log.info("Fim cadastro de compras realizadas, salvarCompras(){}.", comprasObj);
+		
 		try{
+			log.info("Iniciando envio de email, salvarCompras(){}.", CompraDTO.class);
 			enviarEmail(comprasObj);
 		} catch (Exception e) {
+			log.error("Erro no envio de email, salvarCompras(){}.", CompraDTO.class);
 			throw new DataIntegrityException("Email não enviado");
 		} 
 		return comprasObj;
@@ -78,7 +89,7 @@ public class CompraService {
 	 * @throws Exception
 	 */
 	public void enviarEmail(Compra compraObj) throws Exception {
-
+		log.info("Iniciando envio de email, enviarEmail(){}.", compraObj);
 		emailService.sendOrderConfirmationHtmlEmail(compraObj);
 	}
 	
@@ -90,6 +101,8 @@ public class CompraService {
 	 */
 	public Compra fromDTO(CompraDTO obj) {
 		
+		log.info("Iniciando conversão de CompraDTO para Compra, fromDTO(){}.", CompraDTO.class);
+		
 		Compra            compra = new Compra();
 		CartaoCredito     cartao = cartaoCreditoService.buscaCartaoPorNumero(obj.getNumeroCartao());
 		Cliente              usu = new Cliente();
@@ -97,6 +110,7 @@ public class CompraService {
 		MaquinaCartaoCredito maq = maqRepository.findBySerial(obj.getSerial());
 		
 		if(maq == null) {
+			log.info("Erro na busca de maquina, fromDTO(){}.", maq);
 			throw new ObjectNotFoundException(" Maquina não encontrado! Id: " +obj.getSerial()+ "Tipo: " +MaquinaCartaoCredito.class);
 		}
 		
@@ -116,6 +130,8 @@ public class CompraService {
 		loja.setId(maq.getLoja().getId());
 		compra.setLoja(loja);
 		
+		log.info("Fim conversão de CompraDTO para Compra, fromDTO(){}.", compra);
+		
 		return compra;
 	}
 	
@@ -127,6 +143,8 @@ public class CompraService {
 	 */
 	public void atualizaLimiteDisponivel(CompraDTO compra)throws Exception{
 		
+		log.info("Iniciando a atualização do limite disponivel do cliente, atualizaLimiteDisponivel(){}.", CompraDTO.class);
+		
 		CartaoCredito cartao = cartaoCreditoService.buscaCartaoPorNumero(compra.getNumeroCartao());
 		
 		cartao.setId(cartao.getId());
@@ -134,7 +152,7 @@ public class CompraService {
 				);
 		
 		cartaoCreditoService.salvar(cartao);
-		
+		log.info("Fim da atualização do limite disponivel do cliente, atualizaLimiteDisponivel(){}.", CompraDTO.class);
 	}
 	
 	/**
@@ -143,6 +161,7 @@ public class CompraService {
 	 * @return
 	 */
 	public List<Compra> buscarTodos() {
+		log.info("Iniciando busca de todas as compras, buscarTodos(){}.", CompraDTO.class);
 		return compraRepository.findAll();
 	}
 
@@ -153,28 +172,10 @@ public class CompraService {
 	 * @return
 	 */
 	public Compra buscarCompra(Integer id) {
+		log.info("Iniciando busca de compra por id, buscarCompra(){}.", id);
 		
-		Compra compra = new Compra();
+		return compraRepository.findById(id).orElseThrow(()-> 
+		new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +Loja.class));
 		
-		try {
-			compra = compraRepository.findById(id).get();
-		} catch (Exception e) {
-			throw new ObjectNotFoundException("Compra não encontrada!");
-		}
-		return compra;
-	}
-
-	/**
-	 * 
-	 * @param compra
-	 */
-	public void exportaExcelCompras(@Valid CompraExportarDTO compra) {
-		LojaDAO lj = new LojaDAO();
-		List<Loja> lojas = new ArrayList<Loja>();
-		lj.listar();
-		for (int i = 0; i < lojas.size(); i++) {
-			System.out.println("##########NOME LOJA######"+lojas.get(i).getNome());
-		}
-		lj.buscaComprasLojasUsuarios();
 	}
 }

@@ -45,9 +45,6 @@ public class AuthResource {
 	
 	private static final Logger log = LoggerFactory.getLogger(AuthResource.class);
 	
-//	@Autowired
-//	private AuthService service;
-	
 	@RequestMapping(value = "/refresh_token", method = RequestMethod.POST)
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
 		UserSS user = UserService.authenticated();
@@ -88,9 +85,4 @@ public class AuthResource {
 
 		return ResponseEntity.ok(response);
 	}
-//	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
-//	public ResponseEntity<Void> forgot(@Valid @RequestBody EmailDTO objDto) {
-//		service.sendNewPassword(objDto.getEmail());
-//		return ResponseEntity.noContent().build();
-//	}
 }

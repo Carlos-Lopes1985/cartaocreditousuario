@@ -1,3 +1,4 @@
+
 package com.pdz.cartaocredito.service;
 
 import java.io.IOException;
@@ -6,10 +7,11 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pdz.cartaocredito.dao.LojaDAO;
 import com.pdz.cartaocredito.entity.Loja;
 import com.pdz.cartaocredito.entity.dto.LojaNovoDTO;
 import com.pdz.cartaocredito.entity.dto.ResponsavelSalvarArquivoDTO;
@@ -21,8 +23,16 @@ import com.pdz.cartaocredito.service.validations.util.DecodificarURL;
 
 import jxl.read.biff.BiffException;
 
+/**
+ * Responsável pelas funcionalidades referentes a loja
+ *  
+ * @author zupper
+ *
+ */
 @Service
 public class LojaService {
+	
+	private static final Logger log = LoggerFactory.getLogger(LojaService.class);
 	
 	@Autowired
 	private LojaRepository lojaRepository;
@@ -33,6 +43,7 @@ public class LojaService {
 	 * @return
 	 */
 	public List<Loja>buscarTodos(){
+		log.info("Iniciando busca de todas as lojas, buscarTodos(){}.", Loja.class);
 		return lojaRepository.findAll();
 	}
 	
@@ -43,6 +54,7 @@ public class LojaService {
 	 * @return
 	 */
 	public Loja buscarLoja(Integer id) {
+		log.info("Iniciando de lojas por ID, buscarLoja(){}.", Loja.class);
 		
 		return lojaRepository.findById(id).orElseThrow(()-> 
 			new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +Loja.class));
@@ -55,10 +67,14 @@ public class LojaService {
 	 * @return
 	 */
 	public Loja salvar(Loja loja) {
+		log.info("Iniciando cadastro de lojas, salvar(){}.", Loja.class);
 		
 		if(loja == null) {
+			log.error("Erro no cadastro de lojas(){}.", Loja.class);
 			throw new ObjectNotFoundException("Loja não pode ser nulo!");
 		}
+		log.info("Fim cadastro de lojas, salvar(){}.", loja);
+		
 		return lojaRepository.save(loja);
 	}
 	
@@ -69,7 +85,8 @@ public class LojaService {
 	 * @return
 	 */
 	public Loja fromDto(@Valid LojaNovoDTO objDto) {
-		
+		log.info("Iniciando conversão de LojaNovoDTO para Loja, fromDto(){}.", objDto);
+
 		return new Loja(null, objDto.getNome(),objDto.getCnpj());
 	}
 	
@@ -80,6 +97,8 @@ public class LojaService {
 	 * @throws IOException
 	 */
 	public ResponsavelSalvarArquivoDTO importExcelParaBanco(String caminho) throws BiffException, IOException {
+		
+		log.info("Iniciando importe de lojas para o banco de dados, importExcelParaBanco(){}.", Loja.class);
 		
 		List<LojaNovoDTO> lojas          = new ArrayList<LojaNovoDTO>();
 		List<LojaNovoDTO> lojasAux       = new ArrayList<LojaNovoDTO>();
@@ -104,9 +123,14 @@ public class LojaService {
 		
 		if(!lojasAux.isEmpty()) {
 			salvaListaLojas(lojasAux);
+			log.info("Iniciando cadastro de lista de lojas, importExcelParaBanco(){}.", Loja.class);
 		}else {
+			log.error("Erro no cadastro, nenhum dado para salvar, importExcelParaBanco(){}.", Loja.class);
+			
 			throw new ObjectNotFoundException("Não existem registros para importar");
 		}
+		log.info("Fim importe de lojas para o banco de dados, importExcelParaBanco(){}.", resp);
+		
 		return resp;
 	}
 	
@@ -117,6 +141,8 @@ public class LojaService {
 	 * @return
 	 */
 	public String formataStringCaminho(String caminho) {
+		
+		log.info("Iniciando formatação do caminho de import, formataStringCaminho(){}.", Loja.class);
 		
 		StringBuilder sb = new StringBuilder(caminho);
         sb = sb.insert(2,"/");
@@ -131,7 +157,9 @@ public class LojaService {
 	 */
 	public void salvaListaLojas(List<LojaNovoDTO>lojas) {
 		
-		Loja lj = new Loja(); //porque instancia?
+		log.info("Iniciando cadastro de lista de lojas, salvarListaLojas(){}.", Loja.class);
+		
+		Loja lj;
 		
 		for (int i = 0; i < lojas.size(); i++) {
 			
@@ -151,10 +179,11 @@ public class LojaService {
 	 */
 	public boolean verificaLojasIguais(String cnpj) {
 		
+		log.info("Iniciando verificação de lojas iguais, verificaLOjasIguais(){}.", cnpj);
+		
 		if(!CpfCnpj.isValidCNPJ(cnpj)){
 			return false;
 		}
-		
 		Loja loja = lojaRepository.findByCnpj(cnpj);
 		
 		if(loja != null) {
@@ -164,11 +193,14 @@ public class LojaService {
 	}
 	
 	/**
+	 *Responsável por validar lista do arquivo excel
 	 * 
 	 * @param lojas
 	 * @return
 	 */
 	public static List<LojaNovoDTO> validaListaDoArquivoExcel(List<LojaNovoDTO> lojas, ResponsavelSalvarArquivoDTO resp) {
+		
+		log.info("Iniciando validação da lista de dados do arquivo, validaListaDoArquivoExcel(){}.", Loja.class);
 		
 		List<LojaNovoDTO>lojaAux           = new ArrayList<LojaNovoDTO>();
 		List<String>     cnpjNaoImportados = new ArrayList<String>();
@@ -184,28 +216,13 @@ public class LojaService {
 				cnpjNaoImportados.add(lojas.get(i).getCnpj().concat( " - ").concat(lojas.get(i).getNome()));
 			}
 		}
-		
 		lojas.removeAll(lojaAux);
 		
 		resp.setContadorImportados(lojas.size());
 		resp.setRegistrosNaoImportados(cnpjNaoImportados);
 		
+		log.info("Fim validação da lista de dados do arquivo, validaListaDoArquivoExcel(){}.", lojas);
+		
 		return lojas;
-	}
-	
-	public void buscarLojasPorCnpjData(String cnpj)throws ObjectNotFoundException{
-		
-	//	Loja loja = lojaRepository.findByCnpj(cnpj);
-		
-		List<Loja> lojas = new ArrayList<Loja>();
-		
-		LojaDAO lj = new LojaDAO();
-		
-		lojas = lj.listar();
-		
-		for (int i = 0; i < lojas.size(); i++) {
-			System.out.println("##########NOME LOJA######"+lojas.get(i).getNome());
-		}
-	
 	}
 }
