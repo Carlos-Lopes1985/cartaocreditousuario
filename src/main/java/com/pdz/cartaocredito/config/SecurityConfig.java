@@ -20,7 +20,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.pdz.cartaocredito.security.JWTAuthenticationFilter;
 import com.pdz.cartaocredito.security.JWTAutorizationFilter;
 import com.pdz.cartaocredito.security.JWTUtil;
 
@@ -71,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.antMatchers("/v2/api-docs", "/configuration/**","/auth**","/swagger*/**", "/webjars/**")
 			.permitAll()
 			.anyRequest().authenticated();
-		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+	//	http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAutorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
