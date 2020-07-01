@@ -35,6 +35,7 @@ public class Compra implements Serializable {
 	@JoinColumn(name = "id_loja", referencedColumnName = "id")
 	private Loja loja;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;

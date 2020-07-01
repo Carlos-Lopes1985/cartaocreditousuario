@@ -27,8 +27,7 @@ public class Cliente extends Pessoa implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
 	private Set<CartaoCredito>cartoes = new HashSet<>();
-	
-	@JsonIgnore
+
 	@OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
 	private List<Compra>compras = new ArrayList<Compra>();
 	

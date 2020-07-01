@@ -176,6 +176,5 @@ public class CompraService {
 		
 		return compraRepository.findById(id).orElseThrow(()-> 
 		new ObjectNotFoundException("Objeto não encontrado! Id: " +id+ "Tipo: " +Loja.class));
-		
 	}
 }
